@@ -24,7 +24,7 @@ All fields come from the CSV. Field names below match the CSV columns exactly.
 - `consent_call` — Yes / No
 - `consent_message` — Yes / No
 - `consent_channels` — Call, Message, or None (derived display)
-- `desired_treatment` — Cleaning | Checkup | Cavity
+- `desired_treatment` — Cleaning | Checkup | Pain
 - `home_distance_min` — integer, minutes from home to clinic
 - `work_distance_min` — integer, minutes from work to clinic
 - `already_rejected_slots` — slot IDs or None
