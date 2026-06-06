@@ -13,33 +13,73 @@ There are two stages:
 
 ---
 
+## Data Fields
+
+All fields come from the CSV. Field names below match the CSV columns exactly.
+
+**Identity**
+- `patient_id`, `waitlist_id`, `name`, `phone`
+
+**Hard filter inputs**
+- `consent_call` — Yes / No
+- `consent_message` — Yes / No
+- `consent_channels` — Call, Message, or None (derived display)
+- `desired_treatment` — Cleaning | Checkup | Cavity
+- `home_distance_min` — integer, minutes from home to clinic
+- `work_distance_min` — integer, minutes from work to clinic
+- `already_rejected_slots` — slot IDs or None
+- `being_contacted_for_slots` — slot IDs or None
+- `preferred_time_window` — Morning | Afternoon | Any time
+
+**Soft variable inputs**
+- `has_current_appointment` — Yes / No
+- `current_appointment_days_left` — integer (days until current appointment) or N/A
+- `wants_earlier_slot` — Yes / No
+- `occupation` — Student | Part-time worker | Full-time worker | Unknown
+- `last_minute_accepted` — integer (count of accepted last-minute slots)
+- `no_response_count` — integer
+- `cancellation_count` — integer
+- `no_show_count` — integer
+- `waitlist_since` — date (YYYY-MM-DD)
+- `visits_last_12_months` — integer
+
+**Status**
+- `waitlist_status` — QUEUED | CONTACTING | ACCEPTED | DECLINED | EXPIRED
+
+---
+
 ## Stage 1 — Hard Filters
 
 Remove the candidate from ranking entirely if **any** of the following is true. Do not compute a score for filtered candidates.
 
-| # | Filter | Logic |
-|---|---|---|
-| 1 | No valid contact consent | `patient.consentCall === false && patient.consentMessage === false` |
-| 2 | Treatment type incompatible | `waitlistEntry.desiredTreatmentType !== slot.treatmentType` |
-| 3 | Cannot arrive in time | `min(patient.homeDistanceMinutes, patient.workDistanceMinutes) >= minutesUntilSlot` |
-| 4 | Already rejected this slot | `contactAttempt exists where slotId === slot.id && patientId === patient.id && status === DECLINED` |
-| 5 | Marked as do-not-contact | `patient.doNotContact === true` |
-| 6 | Already being contacted for this slot | `contactAttempt exists where slotId === slot.id && patientId === patient.id && status === CALLING or MESSAGE_SENT` |
-| 7 | Time window incompatible | `waitlistEntry.preferredTimeWindow` does not include the slot's time of day (see mapping below) |
+| # | Filter | CSV Field | Logic |
+|---|---|---|---|
+| 1 | No valid contact consent | `consent_call`, `consent_message` | Both are No |
+| 2 | Treatment type incompatible | `desired_treatment` | Does not match the freed slot's treatment type |
+| 3 | Cannot arrive in time | `home_distance_min`, `work_distance_min` | `min(home, work) >= minutesUntilSlot` |
+| 4 | Already rejected this slot | `already_rejected_slots` | Contains the freed slot ID |
+| 5 | Already being contacted for this slot | `being_contacted_for_slots` | Contains the freed slot ID |
+| 6 | Time window incompatible | `preferred_time_window` | Slot time does not fall in the patient's preferred window |
 
 ### Clinic Hours
 
-All appointments are scheduled between **08:00 and 18:00**. Slots outside this range should never exist, but if encountered treat as EXPIRED.
+All appointments are scheduled between **08:00 and 18:00**.
 
 ### Time Window Mapping
 
 ```
-morning   → slot startTime between 08:00 and 11:59
-afternoon → slot startTime between 12:00 and 17:59
-any       → always passes the filter
+Morning   → slot startTime between 08:00 and 11:59
+Afternoon → slot startTime between 12:00 and 17:59
+Any time  → always passes the filter
 ```
 
-> Note: There is no `evening` window. The clinic closes at 18:00, so the latest possible slot start is 17:00 (assuming a minimum 60-minute appointment). Any `preferredTimeWindow` value of `evening` stored on a waitlist entry should be treated as incompatible with all slots and the candidate will always be filtered out — flag this as a data issue.
+### Treatment Type Mapping
+
+```
+CSV value "Cleaning" → matches slot treatmentType: cleaning
+CSV value "Checkup"  → matches slot treatmentType: checkup
+CSV value "Cavity"   → matches slot treatmentType: urgent_consultation
+```
 
 ---
 
@@ -48,8 +88,8 @@ any       → always passes the filter
 After filtering, determine which scoring formula to use:
 
 ```
-if (waitlistEntry.hasAssignedAppointment === true) → use ASSIGNED formula
-if (waitlistEntry.hasAssignedAppointment === false) → use UNASSIGNED formula
+if has_current_appointment === "Yes" → use ASSIGNED formula
+if has_current_appointment === "No"  → use UNASSIGNED formula
 ```
 
 ---
@@ -62,23 +102,24 @@ Each variable returns a number between 0.0 and 1.0.
 
 ### 1. Urgency Score
 
-Derived from the **freed slot's treatment type**, not from the patient's self-reported urgency.
+Derived from the **freed slot's treatment type**, not from any patient field.
 
 ```
-slot.treatmentType === 'cleaning'              → 0.3
-slot.treatmentType === 'checkup'               → 0.6
-slot.treatmentType === 'urgent_consultation'   → 1.0
+slot treatment = Cleaning  → 0.3
+slot treatment = Checkup   → 0.6
+slot treatment = Cavity    → 1.0
 ```
 
 ---
 
 ### 2. Appointment Improvement Score
 
-**Assigned patients only.** Measures how many days earlier the freed slot is compared to the patient's current appointment.
+**Assigned patients only** (`has_current_appointment === "Yes"`).
+
+Measures how many days earlier the freed slot is compared to the patient's current appointment.
 
 ```
-daysSaved = daysBetween(today, waitlistEntry.currentAppointmentDate)
-          - daysBetween(today, slot.startTime)
+daysSaved = current_appointment_days_left - daysUntilFreedSlot
 ```
 
 | Days Saved | Score |
@@ -89,16 +130,16 @@ daysSaved = daysBetween(today, waitlistEntry.currentAppointmentDate)
 | 7–13 days | 0.8 |
 | 14+ days | 1.0 |
 
-> For unassigned patients, this variable is not used and its weight is redistributed.
+> For unassigned patients (`current_appointment_days_left === "N/A"`), this variable is not used.
 
 ---
 
 ### 3. Proximity Score
 
-Use the best available distance between the patient and the clinic.
+Use the best available distance.
 
 ```
-bestDistance = min(patient.homeDistanceMinutes, patient.workDistanceMinutes)
+bestDistance = min(home_distance_min, work_distance_min)
 ```
 
 | Minutes | Score |
@@ -115,14 +156,14 @@ bestDistance = min(patient.homeDistanceMinutes, patient.workDistanceMinutes)
 
 ### 4. Occupation Flexibility Score
 
-Estimates how likely the candidate is to be available on short notice.
+Estimates how likely the candidate is available on short notice.
 
-| Occupation | Score |
+| `occupation` value | Score |
 |---|---|
-| student | 0.9 |
-| part_time | 0.8 |
-| full_time | 0.4 |
-| unknown | 0.5 |
+| Student | 0.9 |
+| Part-time worker | 0.8 |
+| Full-time worker | 0.4 |
+| Unknown | 0.5 |
 
 ---
 
@@ -130,23 +171,12 @@ Estimates how likely the candidate is to be available on short notice.
 
 Rewards candidates who have accepted last-minute slots before.
 
-| History | Score |
+| `last_minute_accepted` value | Score |
 |---|---|
-| Accepted 3+ last-minute appointments | 1.0 |
-| Accepted 2 | 0.8 |
-| Accepted 1 | 0.6 |
-| No history | 0.4 |
-| Often rejected last-minute offers | 0.2 |
-
-Field: `patient.lastMinuteAcceptanceCount`
-
-```
->= 3  → 1.0
-=== 2 → 0.8
-=== 1 → 0.6
-=== 0 → 0.4
-< 0   → 0.2  (use a separate flag: patient.frequentlyRejectsLastMinute)
-```
+| 3 or more | 1.0 |
+| 2 | 0.8 |
+| 1 | 0.6 |
+| 0 | 0.4 |
 
 ---
 
@@ -154,50 +184,48 @@ Field: `patient.lastMinuteAcceptanceCount`
 
 Penalizes candidates who often do not answer.
 
-| No-Response Count | Score |
+| `no_response_count` value | Score |
 |---|---|
 | 0 | 1.0 |
 | 1 | 0.8 |
 | 2 | 0.5 |
-| 3+ | 0.2 |
-
-Field: `patient.noResponseCount`
+| 3 or more | 0.2 |
 
 ---
 
 ### 7. Cancellation History Score
 
-Penalizes candidates who frequently cancel appointments.
+Penalizes candidates who frequently cancel.
 
-| Cancellation Count | Score |
+| `cancellation_count` value | Score |
 |---|---|
 | 0 | 1.0 |
 | 1 | 0.8 |
 | 2 | 0.5 |
-| 3+ | 0.2 |
-
-Field: `patient.cancellationCount`
+| 3 or more | 0.2 |
 
 ---
 
 ### 8. No-Show History Score
 
-Penalizes candidates who didn't show up without cancelling. Weighted more severely than cancellations.
+Penalizes candidates who did not show up without cancelling. Weighted more severely than cancellations.
 
-| No-Show Count | Score |
+| `no_show_count` value | Score |
 |---|---|
 | 0 | 1.0 |
 | 1 | 0.7 |
 | 2 | 0.4 |
-| 3+ | 0.1 |
-
-Field: `patient.noShowCount`
+| 3 or more | 0.1 |
 
 ---
 
 ### 9. Waitlist Age Score
 
 Adds fairness. Rewards patients who have been waiting longer.
+
+```
+daysWaiting = daysBetween(waitlist_since, today)
+```
 
 | Days Waiting | Score |
 |---|---|
@@ -206,24 +234,18 @@ Adds fairness. Rewards patients who have been waiting longer.
 | 7–13 days | 0.5 |
 | Less than 7 days | 0.3 |
 
-```
-daysWaiting = daysBetween(waitlistEntry.createdAt, today)
-```
-
 ---
 
 ### 10. Visit Frequency Score
 
-Rewards patients who are regular visitors to the clinic. Indicates commitment and reliability.
+Rewards regular clinic visitors.
 
-| Visits in last 12 months | Score |
+| `visits_last_12_months` value | Score |
 |---|---|
-| 4+ visits | 1.0 |
-| 2–3 visits | 0.7 |
-| 1 visit | 0.4 |
-| 0 visits | 0.2 |
-
-Field: `patient.visitsLastTwelveMonths`
+| 4 or more | 1.0 |
+| 2–3 | 0.7 |
+| 1 | 0.4 |
+| 0 | 0.2 |
 
 ---
 
@@ -245,19 +267,14 @@ hoursUntilSlot = hoursBetween(now, slot.startTime)
 
 ### How to apply the modifier
 
-The modifier increases the effective weight of proximity and proportionally reduces all other weights so the formula still sums to 1.0.
-
-**Implementation approach:**
-
 ```
-baseProximityWeight = formula.proximityWeight          // e.g. 0.10
+baseProximityWeight     = formula.proximityWeight       // 0.12
 modifiedProximityWeight = baseProximityWeight * multiplier
 
-// Remaining weight to distribute among other variables
-remainingWeight = 1.0 - modifiedProximityWeight
+remainingWeight         = 1.0 - modifiedProximityWeight
 originalRemainingWeight = 1.0 - baseProximityWeight
 
-// Scale all other weights proportionally
+// Scale all other weights proportionally so formula still sums to 1.0
 for each variable v (except proximity):
   v.effectiveWeight = v.baseWeight * (remainingWeight / originalRemainingWeight)
 ```
@@ -268,7 +285,7 @@ for each variable v (except proximity):
 
 ### Assigned Patient Formula
 
-Use when `waitlistEntry.hasAssignedAppointment === true`.
+Use when `has_current_appointment === "Yes"`.
 
 ```
 score = 0.25 * urgency_score
@@ -289,7 +306,7 @@ Total base weight = **1.00**
 
 ### Unassigned Patient Formula
 
-Use when `waitlistEntry.hasAssignedAppointment === false`.
+Use when `has_current_appointment === "No"`.
 
 ```
 score = 0.30 * urgency_score
@@ -305,7 +322,7 @@ score = 0.30 * urgency_score
 
 Total base weight = **1.00**
 
-> Note: `appointment_improvement_score` is not used for unassigned patients. Its weight is redistributed to urgency and waitlist age.
+> `appointment_improvement_score` is not used for unassigned patients.
 
 ---
 
@@ -315,15 +332,16 @@ The ranking engine returns a sorted array of scored candidates:
 
 ```typescript
 interface RankedCandidate {
-  patientId: string
-  waitlistEntryId: string
+  patient_id: string
+  waitlist_id: string
+  name: string
   patientType: 'assigned' | 'unassigned'
-  finalScore: number                  // 0.0 to 1.0
+  finalScore: number                      // 0.0 to 1.0
   variableScores: {
     urgency: number
-    appointmentImprovement?: number   // only for assigned
+    appointmentImprovement?: number       // assigned only
     proximity: number
-    proximityModifier: number         // the multiplier applied
+    proximityModifier: number             // multiplier applied
     occupationFlexibility: number
     lastMinuteAcceptance: number
     noResponse: number
@@ -333,71 +351,71 @@ interface RankedCandidate {
     visitFrequency: number
   }
   hardFilterPassed: boolean
-  filteredReason?: string             // if hardFilterPassed === false
+  filteredReason?: string                 // if hardFilterPassed === false
+  rank?: number                           // position in sorted list
 }
 ```
 
-Candidates are sorted **descending by finalScore**.
-
-Filtered candidates are included in the output with `hardFilterPassed: false` and a `filteredReason` for dashboard visibility, but are never contacted.
+Candidates sorted **descending by finalScore**.
+Filtered candidates included with `hardFilterPassed: false` for dashboard visibility but never contacted.
 
 ---
 
 ## Complete Example — Assigned Patient
 
-**Freed slot:**
-- Treatment: urgent_consultation
-- Start time: tomorrow at 9:00am
-- Hours until slot: 20 hours
+**Freed slot:** Cavity · tomorrow 09:00 · 20 hours away
 
-**Patient: Sarah Miller**
-- Has current appointment in 14 days → assigned
-- Home distance: 8 min, Work distance: 25 min → bestDistance = 8 min
-- Occupation: student
-- lastMinuteAcceptanceCount: 3
-- noResponseCount: 0
-- cancellationCount: 1
-- noShowCount: 0
-- visitsLastTwelveMonths: 3
-- Waitlist age: 10 days
-- preferredTimeWindow: morning → slot at 9am ✓ passes hard filter
-- consentCall: true ✓ passes hard filter
+**Patient: Sarah Miller** (from CSV)
+
+| CSV Field | Value |
+|---|---|
+| `has_current_appointment` | Yes |
+| `current_appointment_days_left` | 14 |
+| `desired_treatment` | Cavity |
+| `home_distance_min` | 8 |
+| `work_distance_min` | 25 |
+| `occupation` | Student |
+| `last_minute_accepted` | 3 |
+| `no_response_count` | 0 |
+| `cancellation_count` | 1 |
+| `no_show_count` | 0 |
+| `visits_last_12_months` | 3 |
+| `waitlist_since` | 2026-05-27 (10 days ago) |
+| `preferred_time_window` | Morning → slot at 09:00 ✓ |
+| `consent_call` | Yes ✓ |
 
 **Variable scores:**
 ```
-urgency_score                = 1.0   (urgent_consultation)
-appointment_improvement_score = 0.8  (14 days saved → 1.0 bracket, but slot is tomorrow so ~13 days saved → 0.8)
-proximity_score              = 1.0   (8 min → 0–10 bracket)
-occupation_flexibility_score = 0.9   (student)
-last_minute_acceptance_score = 1.0   (3+ accepted)
-no_response_score            = 1.0   (0 no-responses)
-cancellation_history_score   = 0.8   (1 cancellation)
-no_show_score                = 1.0   (0 no-shows)
-waitlist_age_score           = 0.5   (10 days → 7–13 bracket)
-visit_frequency_score        = 0.7   (2–3 visits)
+urgency_score                 = 1.0   (Cavity)
+appointment_improvement_score = 0.8   (14 days saved → 7–13 bracket)
+proximity_score               = 1.0   (8 min → 0–10)
+occupation_flexibility_score  = 0.9   (Student)
+last_minute_acceptance_score  = 1.0   (3+)
+no_response_score             = 1.0   (0)
+cancellation_history_score    = 0.8   (1)
+no_show_score                 = 1.0   (0)
+waitlist_age_score            = 0.5   (10 days → 7–13)
+visit_frequency_score         = 0.7   (3 visits → 2–3)
 ```
 
-**Days until slot modifier:**
+**Days until slot modifier (20 hours → 1.2x):**
 ```
-hoursUntilSlot = 20 → multiplier = 1.2x
 modifiedProximityWeight = 0.12 * 1.2 = 0.144
-remainingWeight = 1.0 - 0.144 = 0.856
-originalRemainingWeight = 1.0 - 0.12 = 0.88
-scaleFactor = 0.856 / 0.88 = 0.9727
+scaleFactor = (1.0 - 0.144) / (1.0 - 0.12) = 0.856 / 0.88 = 0.9727
 ```
 
-**Final score (assigned formula with modifier applied):**
+**Final score:**
 ```
-score = (0.25 * 0.9727) * 1.0      → 0.2432
-      + (0.20 * 0.9727) * 0.8      → 0.1556
-      + (0.15 * 0.9727) * 0.9      → 0.1308
-      + 0.144 * 1.0                → 0.1440  ← modified proximity
-      + (0.08 * 0.9727) * 1.0      → 0.0778
-      + (0.07 * 0.9727) * 0.5      → 0.0340
-      + (0.05 * 0.9727) * 0.7      → 0.0340
-      + (0.04 * 0.9727) * 1.0      → 0.0389
-      + (0.03 * 0.9727) * 0.8      → 0.0233
-      + (0.01 * 0.9727) * 1.0      → 0.0097
+(0.25 * 0.9727) * 1.0  → 0.2432
+(0.20 * 0.9727) * 0.8  → 0.1556
+(0.15 * 0.9727) * 0.9  → 0.1308
+ 0.144           * 1.0  → 0.1440  ← modified proximity
+(0.08 * 0.9727) * 1.0  → 0.0778
+(0.07 * 0.9727) * 0.5  → 0.0340
+(0.05 * 0.9727) * 0.7  → 0.0340
+(0.04 * 0.9727) * 1.0  → 0.0389
+(0.03 * 0.9727) * 0.8  → 0.0233
+(0.01 * 0.9727) * 1.0  → 0.0097
 
 Final Score ≈ 0.891
 ```
@@ -408,34 +426,10 @@ Final Score ≈ 0.891
 
 | Case | Behaviour |
 |---|---|
-| `hoursUntilSlot <= 0` | Slot is expired → do not rank, mark slot as EXPIRED |
-| `slot.startTime` before 08:00 or after 18:00 | Invalid slot → mark as EXPIRED, do not rank |
-| `waitlistEntry.preferredTimeWindow === 'evening'` | Always filtered out — no evening slots exist, flag as data issue |
-| `bestDistance >= minutesUntilSlot` | Hard filter: cannot arrive in time |
-| `waitlistEntry.preferredTimeWindow` is null | Treat as `any`, passes time window filter |
-| `patient.visitsLastTwelveMonths` is null | Default to 0 visits → score 0.2 |
+| `hoursUntilSlot <= 0` | Slot expired → mark EXPIRED, do not rank |
+| `slot.startTime` before 08:00 or after 18:00 | Invalid slot → mark EXPIRED |
+| `preferred_time_window` is null | Treat as Any time, passes filter |
+| `visits_last_12_months` is null | Default to 0 → score 0.2 |
+| `current_appointment_days_left === "N/A"` on assigned patient | Data error → treat as unassigned |
 | All candidates filtered | Set slot status to NEEDS_HUMAN |
-| Score tie between candidates | Prefer the one with higher waitlist age score |
-
----
-
-## Data Fields Required
-
-All fields the ranking engine reads from the data model:
-
-**From `Patient`:**
-- `id`, `homeDistanceMinutes`, `workDistanceMinutes`, `occupationType`
-- `consentCall`, `consentMessage`, `doNotContact`
-- `lastMinuteAcceptanceCount`, `frequentlyRejectsLastMinute`
-- `noResponseCount`, `cancellationCount`, `noShowCount`
-- `visitsLastTwelveMonths`
-
-**From `WaitlistEntry`:**
-- `id`, `patientId`, `desiredTreatmentType`, `preferredTimeWindow`
-- `hasAssignedAppointment`, `currentAppointmentDate`, `createdAt`
-
-**From `AppointmentSlot`:**
-- `id`, `treatmentType`, `startTime`
-
-**From `ContactAttempt`:**
-- `patientId`, `slotId`, `status` (to check for prior declines or active contacts)
+| Score tie | Prefer candidate with higher `waitlist_age_score` |
