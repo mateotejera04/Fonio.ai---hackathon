@@ -2,5 +2,10 @@ services:
   web:
     image: fonio-web:latest
     restart: unless-stopped
-    ports:
-      - "4322:3000"
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_KEY}
+    depends_on:
+      - web
