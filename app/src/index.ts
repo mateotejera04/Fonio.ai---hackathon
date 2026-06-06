@@ -18,7 +18,7 @@ const callSchema = new Schema(
 const Call = mongoose.model("Call", callSchema, "calls");
 
 const app = express();
-const PORT = 5000;
+const PORT = Number(process.env.PORT) || 5000;
 const FONIO_API_KEY = process.env.FONIO_API_KEY!;
 const FONIO_FROM_NUMBER = "+4369919210575";
 const OUTBOUND_CALL_URL = "https://app.fonio.ai/api/public/v1/outbound_call";
