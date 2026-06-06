@@ -39,7 +39,6 @@ export interface WaitlistPatient {
 
   // Soft-scoring inputs
   has_current_appointment: boolean;
-  current_appointment_days_left: number | null; // null when unassigned
   wants_earlier_slot: boolean;
   occupation: Occupation;
   last_minute_accepted: number;

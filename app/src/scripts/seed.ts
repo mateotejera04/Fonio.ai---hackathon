@@ -70,8 +70,6 @@ function toDoc(row: Record<string, string>): WaitlistPatient {
     preferred_time_window: (row['preferred_time_window'] || 'Any time') as TimeWindow,
 
     has_current_appointment: yesNo(row['has_current_appointment']),
-    // header in the CSV is "current_appointment days left"
-    current_appointment_days_left: numOrNull(row['current_appointment days left']),
     wants_earlier_slot: yesNo(row['wants_earlier_slot']),
     occupation: (row['occupation'] || 'Unknown') as Occupation,
     last_minute_accepted: numOr(row['last_minute_accepted'], 0),

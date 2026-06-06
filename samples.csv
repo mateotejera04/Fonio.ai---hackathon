@@ -1,201 +1,201 @@
-patient_id,waitlist_id,name,phone,consent_call,consent_message,desired_treatment,home_distance_min,work_distance_min,already_rejected_slots,being_contacted_for_slots,preferred_time_window,has_current_appointment,current_appointment days left,wants_earlier_slot,occupation,last_minute_accepted,no_response_count,cancellation_count,no_show_count,waitlist_since,visits_last_12_months,waitlist_status
-P0001,W0001,Lukas Wolf,+436761533224,Yes,No,Checkup,19,13,,,Morning,No,,No,Part-time worker,0,0,1,0,2026-05-15,1,QUEUED
-P0002,W0002,Felix Wagner,+436803094235,Yes,No,Pain,6,16,,,Morning,No,,No,Student,4,0,1,2,2026-06-01,3,QUEUED
-P0003,W0003,Paul Mayer,+436882197935,Yes,Yes,Pain,31,15,S0002,,Morning,No,,No,Full-time worker,2,0,0,0,2026-06-02,2,QUEUED
-P0004,W0004,Marie Schneider,+436888187926,Yes,Yes,Cleaning,49,34,,,Afternoon,Yes,6,Yes,Full-time worker,3,0,0,3,2026-05-29,3,QUEUED
-P0005,W0005,Johanna Lechner,+436505924115,Yes,Yes,Checkup,48,12,,,Afternoon,Yes,14,Yes,Unknown,1,1,3,2,2026-05-24,1,QUEUED
-P0006,W0006,Patrick Leitner,+436802321324,Yes,Yes,Cleaning,15,28,,,Any time,Yes,29,Yes,Full-time worker,0,1,0,2,2026-04-04,4,QUEUED
-P0007,W0007,Julian Hofer,+436641352896,Yes,Yes,Cleaning,50,28,,,Morning,No,,No,Full-time worker,1,0,0,0,2026-05-31,3,QUEUED
-P0008,W0008,Katharina Egger,+436991908841,Yes,Yes,Pain,34,17,,,Morning,Yes,19,Yes,Full-time worker,2,3,0,0,2026-05-26,2,QUEUED
-P0009,W0009,Maximilian Schneider,+436607728339,Yes,Yes,Cleaning,5,10,,,Any time,No,,No,Unknown,3,0,2,4,2026-06-01,4,QUEUED
-P0010,W0010,Benjamin Leitner,+436504117625,No,Yes,Checkup,21,20,,,Morning,No,,No,Student,0,0,1,0,2026-05-21,6,QUEUED
-P0011,W0011,Katharina Mayer,+436802677407,Yes,No,Pain,50,24,,,Any time,No,,No,Full-time worker,0,0,0,2,2026-03-29,5,QUEUED
-P0012,W0012,Andrea Wagner,+436804533779,Yes,Yes,Pain,13,21,,,Any time,No,,No,Unknown,2,0,0,0,2026-06-06,2,QUEUED
-P0013,W0013,Benjamin Fischer,+436801604451,Yes,No,Pain,35,40,,,Afternoon,No,,No,Full-time worker,3,0,0,0,2026-05-12,2,QUEUED
-P0014,W0014,Birgit Wolf,+436886573147,Yes,No,Checkup,10,10,,,Any time,Yes,31,Yes,Student,2,3,3,1,2026-06-06,1,QUEUED
-P0015,W0015,Lukas Reiter,+436769996207,No,Yes,Pain,26,22,,,Morning,Yes,34,Yes,Part-time worker,0,0,2,0,2026-05-27,3,QUEUED
-P0016,W0016,Julian Eder,+436506539837,Yes,Yes,Checkup,20,26,,,Afternoon,Yes,26,Yes,Student,2,1,0,2,2026-05-28,3,QUEUED
-P0017,W0017,Theresa Weber,+436768418210,Yes,Yes,Checkup,27,23,,,Morning,Yes,17,Yes,Full-time worker,2,0,1,2,2026-05-02,4,QUEUED
-P0018,W0018,Maximilian Moser,+436769294272,No,Yes,Pain,44,9,,,Morning,No,,No,Unknown,1,0,0,1,2026-05-09,5,QUEUED
-P0019,W0019,Andrea Winkler,+436808159521,No,Yes,Cleaning,43,25,,,Morning,No,,No,Unknown,3,4,3,2,2026-05-31,1,QUEUED
-P0020,W0020,Eva Baumgartner,+436766551268,Yes,Yes,Checkup,16,14,,,Any time,No,,No,Full-time worker,1,0,0,0,2026-05-31,5,QUEUED
-P0021,W0021,Johanna Wolf,+436887783308,Yes,Yes,Pain,46,19,,,Morning,No,,No,Full-time worker,2,1,1,3,2026-05-30,3,QUEUED
-P0022,W0022,Marie Fischer,+436501873851,Yes,Yes,Checkup,29,22,,,Afternoon,No,,No,Part-time worker,4,0,1,2,2026-06-05,3,QUEUED
-P0023,W0023,Markus Lang,+436606218367,No,Yes,Cleaning,28,15,,,Any time,No,,No,Part-time worker,0,0,0,1,2026-05-16,6,QUEUED
-P0024,W0024,Jonas Weber,+436508273315,Yes,No,Checkup,31,9,,,Any time,No,,No,Full-time worker,4,0,1,0,2026-05-26,2,QUEUED
-P0025,W0025,Daniel Baumgartner,+436609179730,Yes,Yes,Cleaning,37,41,,,Afternoon,Yes,17,Yes,Full-time worker,0,2,0,2,2026-05-30,4,QUEUED
-P0026,W0026,Tobias Hofer,+436886549757,Yes,Yes,Cleaning,20,24,,,Any time,No,,No,Part-time worker,1,1,0,0,2026-05-31,4,QUEUED
-P0027,W0027,Julia Brunner,+436505901239,Yes,Yes,Checkup,19,28,,,Afternoon,Yes,32,Yes,Part-time worker,2,0,1,0,2026-06-03,5,QUEUED
-P0028,W0028,David Müller,+436994786401,Yes,Yes,Checkup,27,10,,,Morning,Yes,7,Yes,Full-time worker,2,4,1,2,2026-06-01,2,QUEUED
-P0029,W0029,Christian Fischer,+436504916201,Yes,Yes,Cleaning,38,23,,,Any time,No,,No,Full-time worker,3,1,0,0,2026-06-01,6,QUEUED
-P0030,W0030,Nina Wagner,+436508248238,Yes,Yes,Checkup,27,30,,,Any time,Yes,13,Yes,Full-time worker,2,0,1,3,2026-05-31,5,QUEUED
-P0031,W0031,Manuel Eder,+436606533187,Yes,Yes,Cleaning,39,10,,,Afternoon,Yes,2,Yes,Full-time worker,1,0,0,0,2026-04-12,4,QUEUED
-P0032,W0032,Alexander Berger,+436648350368,Yes,Yes,Checkup,39,45,,,Any time,Yes,9,Yes,Full-time worker,3,0,0,0,2026-06-06,4,QUEUED
-P0033,W0033,Sabine Hofer,+436764197911,No,Yes,Checkup,25,31,,,Any time,Yes,21,Yes,Full-time worker,3,1,2,2,2026-05-31,1,QUEUED
-P0034,W0034,Markus Weber,+436885006492,Yes,No,Checkup,29,40,,,Morning,No,,No,Full-time worker,1,0,2,0,2026-04-06,4,QUEUED
-P0035,W0035,Markus Wagner,+436765446344,Yes,Yes,Pain,37,5,,,Any time,No,,No,Full-time worker,0,1,1,2,2026-06-04,5,QUEUED
-P0036,W0036,Benjamin Bauer,+436501771600,Yes,Yes,Cleaning,14,45,,,Afternoon,No,,No,Full-time worker,0,0,0,1,2026-05-18,1,QUEUED
-P0037,W0037,Andreas Fischer,+436803650391,No,Yes,Checkup,37,21,,,Any time,Yes,26,Yes,Full-time worker,0,3,3,0,2026-06-04,6,QUEUED
-P0038,W0038,Anna Brunner,+436809333700,Yes,Yes,Cleaning,25,5,,,Afternoon,Yes,4,Yes,Full-time worker,3,1,1,0,2026-06-04,4,QUEUED
-P0039,W0039,Tobias Aigner,+436805572250,Yes,No,Checkup,31,16,,,Any time,Yes,16,Yes,Part-time worker,3,0,1,0,2026-05-21,4,QUEUED
-P0040,W0040,Sarah Egger,+436767232293,Yes,Yes,Pain,24,39,,,Morning,Yes,28,Yes,Full-time worker,0,0,0,1,2026-05-25,3,QUEUED
-P0041,W0041,Julia Wagner,+436808031780,Yes,No,Checkup,39,13,,,Morning,No,,No,Part-time worker,1,0,1,0,2026-05-30,5,QUEUED
-P0042,W0042,Johanna Baumgartner,+436762538024,Yes,Yes,Cleaning,27,8,,,Any time,Yes,15,Yes,Unknown,2,0,0,0,2026-06-02,4,QUEUED
-P0043,W0043,Daniel Lechner,+436507010308,Yes,Yes,Checkup,13,39,,,Afternoon,No,,No,Unknown,2,0,0,0,2026-05-08,0,QUEUED
-P0044,W0044,Benjamin Egger,+436997738019,Yes,Yes,Cleaning,47,38,,,Afternoon,Yes,35,Yes,Unknown,1,0,0,0,2026-04-13,5,QUEUED
-P0045,W0045,Fabian Schneider,+436767979148,No,Yes,Checkup,43,18,,,Afternoon,Yes,25,Yes,Full-time worker,2,0,0,0,2026-05-24,6,QUEUED
-P0046,W0046,Andrea Wagner,+436642738129,Yes,No,Checkup,50,32,,,Any time,Yes,3,Yes,Full-time worker,1,0,1,0,2026-04-10,0,QUEUED
-P0047,W0047,Stefan Mayer,+436503380261,Yes,Yes,Cleaning,27,26,,,Morning,Yes,5,Yes,Full-time worker,2,2,0,0,2026-05-13,2,QUEUED
-P0048,W0048,Daniel Fischer,+436762860421,Yes,Yes,Cleaning,39,43,,,Morning,No,,No,Full-time worker,0,0,0,0,2026-05-14,0,QUEUED
-P0049,W0049,Martina Eder,+436507661748,Yes,No,Checkup,15,22,S0002,,Any time,No,,No,Student,3,0,0,2,2026-06-01,5,QUEUED
-P0050,W0050,Sabine Aigner,+436646696087,Yes,Yes,Cleaning,35,11,,,Morning,No,,No,Full-time worker,0,1,0,0,2026-06-04,3,QUEUED
-P0051,W0051,Stefan Wimmer,+436886422534,Yes,No,Cleaning,37,41,,,Morning,Yes,4,Yes,Full-time worker,3,1,0,0,2026-05-28,2,QUEUED
-P0052,W0052,Patrick Maier,+436994158134,Yes,No,Pain,37,42,,,Afternoon,No,,No,Full-time worker,0,0,0,0,2026-06-01,0,QUEUED
-P0053,W0053,Jonas Berger,+436642105817,Yes,Yes,Pain,29,31,,,Any time,No,,No,Unknown,0,1,0,0,2026-05-21,5,QUEUED
-P0054,W0054,Laura Maier,+436889831414,Yes,Yes,Pain,13,24,,,Any time,No,,No,Full-time worker,0,0,0,0,2026-04-23,2,QUEUED
-P0055,W0055,Simon Leitner,+436803777286,Yes,Yes,Checkup,47,13,,,Any time,No,,No,Full-time worker,2,0,0,0,2026-05-31,6,QUEUED
-P0056,W0056,Jonas Reiter,+436604350371,Yes,Yes,Checkup,33,34,,,Morning,Yes,12,Yes,Unknown,3,0,0,1,2026-05-31,5,QUEUED
-P0057,W0057,Sarah Aigner,+436762369112,Yes,Yes,Cleaning,33,27,,S0001,Any time,Yes,2,Yes,Part-time worker,1,4,3,3,2026-05-27,4,QUEUED
-P0058,W0058,Julia Wimmer,+436509385742,Yes,Yes,Cleaning,24,12,,,Morning,No,,No,Part-time worker,1,0,0,0,2026-05-10,1,QUEUED
-P0059,W0059,Paul Lechner,+436645045421,Yes,Yes,Checkup,48,29,,,Any time,No,,No,Full-time worker,2,3,3,2,2026-05-24,0,QUEUED
-P0060,W0060,Lena Hofer,+436765249899,Yes,Yes,Checkup,17,7,,,Any time,Yes,26,Yes,Part-time worker,0,0,0,1,2026-05-10,0,QUEUED
-P0061,W0061,Verena Mayer,+436642721307,Yes,No,Checkup,54,32,,,Morning,Yes,19,Yes,Full-time worker,0,0,0,0,2026-03-29,2,QUEUED
-P0062,W0062,Magdalena Winkler,+436503117788,Yes,Yes,Checkup,51,15,,,Morning,No,,No,Full-time worker,0,2,2,2,2026-06-04,3,QUEUED
-P0063,W0063,Lukas Wolf,+436605791184,Yes,Yes,Checkup,38,29,,,Any time,No,,No,Part-time worker,2,1,1,0,2026-05-25,1,QUEUED
-P0064,W0064,Julian Lang,+436604971774,Yes,Yes,Checkup,45,16,,,Any time,No,,No,Unknown,2,0,1,0,2026-04-12,4,QUEUED
-P0065,W0065,David Leitner,+436884052834,Yes,No,Checkup,36,34,,,Morning,Yes,35,Yes,Full-time worker,2,0,1,2,2026-04-15,5,QUEUED
-P0066,W0066,Laura Schneider,+436886664316,Yes,No,Checkup,39,10,,,Morning,No,,No,Part-time worker,3,0,1,0,2026-05-10,0,QUEUED
-P0067,W0067,Carina Moser,+436768792046,Yes,Yes,Pain,51,30,,,Morning,No,,No,Full-time worker,0,0,0,0,2026-05-12,4,QUEUED
-P0068,W0068,David Wagner,+436886246485,No,No,Cleaning,15,24,S0002,,Any time,Yes,24,Yes,Student,0,0,3,0,2026-06-03,5,QUEUED
-P0069,W0069,Hannah Weber,+436507720644,Yes,Yes,Cleaning,6,18,,,Morning,No,,No,Student,0,0,0,0,2026-04-29,2,QUEUED
-P0070,W0070,Laura Steiner,+436808666995,Yes,Yes,Cleaning,33,37,,,Morning,No,,No,Full-time worker,0,1,0,2,2026-04-05,2,QUEUED
-P0071,W0071,Jonas Leitner,+436644817541,No,No,Checkup,34,42,,,Afternoon,Yes,9,Yes,Full-time worker,2,0,0,0,2026-04-01,3,QUEUED
-P0072,W0072,Sabine Steiner,+436606453426,Yes,Yes,Checkup,47,35,,,Morning,No,,No,Full-time worker,4,1,0,3,2026-05-24,2,QUEUED
-P0073,W0073,Hannah Lang,+436643044708,Yes,No,Checkup,36,25,,,Any time,Yes,18,Yes,Part-time worker,1,0,1,0,2026-04-15,2,QUEUED
-P0074,W0074,Johanna Lang,+436502681042,Yes,Yes,Checkup,11,20,,,Morning,No,,No,Part-time worker,1,0,0,1,2026-05-08,0,QUEUED
-P0075,W0075,Tobias Schneider,+436507660463,Yes,No,Cleaning,42,7,,,Any time,No,,No,Full-time worker,2,3,4,1,2026-05-28,0,QUEUED
-P0076,W0076,Sophie Steiner,+436645949685,Yes,Yes,Checkup,29,15,,,Morning,No,,No,Full-time worker,1,2,0,2,2026-04-26,5,QUEUED
-P0077,W0077,Katharina Fischer,+436602042273,Yes,Yes,Pain,29,24,,,Morning,No,,No,Full-time worker,2,0,0,0,2026-05-14,6,QUEUED
-P0078,W0078,Elena Lang,+436802373555,Yes,Yes,Checkup,38,39,,,Morning,No,,No,Full-time worker,1,1,0,2,2026-05-26,0,QUEUED
-P0079,W0079,Sarah Baumgartner,+436886170227,Yes,Yes,Cleaning,11,34,S0002,,Morning,Yes,32,Yes,Full-time worker,2,0,1,0,2026-05-03,3,QUEUED
-P0080,W0080,Magdalena Baumgartner,+436503994290,Yes,No,Checkup,32,29,,,Morning,No,,No,Full-time worker,4,0,0,2,2026-05-25,5,QUEUED
-P0081,W0081,Benjamin Wimmer,+436801563316,Yes,No,Cleaning,24,18,,,Any time,No,,No,Student,1,1,2,0,2026-05-24,0,QUEUED
-P0082,W0082,Petra Maier,+436645616316,Yes,Yes,Cleaning,28,20,,,Morning,Yes,28,Yes,Full-time worker,0,2,1,1,2026-05-25,3,QUEUED
-P0083,W0083,Katharina Lechner,+436607516590,Yes,No,Checkup,14,34,,,Morning,Yes,15,Yes,Part-time worker,0,3,4,3,2026-06-04,0,QUEUED
-P0084,W0084,Michael Aigner,+436606395804,Yes,Yes,Cleaning,12,35,S0001,,Morning,Yes,28,Yes,Part-time worker,2,2,2,1,2026-05-27,3,QUEUED
-P0085,W0085,Hannah Müller,+436645317226,Yes,Yes,Checkup,19,29,,,Morning,Yes,5,Yes,Part-time worker,2,0,0,0,2026-04-26,2,QUEUED
-P0086,W0086,Lukas Eder,+436509106820,Yes,Yes,Checkup,23,12,,,Morning,No,,No,Student,2,0,0,0,2026-06-04,0,QUEUED
-P0087,W0087,Magdalena Mayer,+436642352527,Yes,Yes,Cleaning,13,28,,,Morning,Yes,23,Yes,Full-time worker,2,3,0,2,2026-05-08,3,QUEUED
-P0088,W0088,Andreas Steiner,+436801552000,Yes,Yes,Checkup,49,41,,,Any time,No,,No,Unknown,0,1,0,0,2026-06-06,1,QUEUED
-P0089,W0089,Theresa Wimmer,+436992275374,No,Yes,Cleaning,52,10,,,Any time,Yes,26,Yes,Full-time worker,0,1,2,0,2026-05-16,4,QUEUED
-P0090,W0090,Patrick Hofer,+436887536772,Yes,Yes,Cleaning,53,9,,,Afternoon,Yes,28,Yes,Full-time worker,0,0,0,0,2026-05-09,2,QUEUED
-P0091,W0091,Theresa Gruber,+436803845129,Yes,No,Cleaning,29,10,,,Afternoon,Yes,17,Yes,Part-time worker,2,0,0,0,2026-06-04,1,QUEUED
-P0092,W0092,Julia Müller,+436763283789,Yes,No,Cleaning,30,26,,,Afternoon,Yes,22,Yes,Part-time worker,0,1,1,1,2026-05-08,1,QUEUED
-P0093,W0093,Manuel Steiner,+436884517316,Yes,No,Cleaning,42,16,,,Any time,Yes,29,Yes,Full-time worker,1,0,1,2,2026-05-16,4,QUEUED
-P0094,W0094,Petra Fuchs,+436802425760,Yes,Yes,Checkup,52,31,,,Any time,No,,No,Full-time worker,0,0,0,0,2026-06-01,3,QUEUED
-P0095,W0095,Markus Berger,+436647978909,Yes,No,Cleaning,51,42,,,Morning,No,,No,Full-time worker,3,0,2,1,2026-06-02,2,QUEUED
-P0096,W0096,Julian Wagner,+436803926839,Yes,No,Checkup,13,25,,,Morning,Yes,14,Yes,Student,1,0,0,0,2026-05-11,4,QUEUED
-P0097,W0097,Michael Mayer,+436762911847,No,Yes,Checkup,12,41,,,Any time,No,,No,Full-time worker,0,1,0,0,2026-06-04,3,QUEUED
-P0098,W0098,Simon Müller,+436803313029,Yes,Yes,Pain,20,24,,,Any time,Yes,30,Yes,Part-time worker,1,0,0,0,2026-06-05,5,QUEUED
-P0099,W0099,Laura Steiner,+436769199017,Yes,Yes,Cleaning,43,37,,,Any time,Yes,9,Yes,Full-time worker,0,1,2,0,2026-05-27,0,QUEUED
-P0100,W0100,Benjamin Fischer,+436508545256,Yes,Yes,Checkup,35,11,,,Morning,Yes,29,Yes,Full-time worker,0,2,0,2,2026-05-12,0,QUEUED
-P0101,W0101,Maximilian Schwarz,+436649630451,Yes,Yes,Pain,25,43,,,Any time,No,,No,Full-time worker,4,0,0,2,2026-03-24,4,QUEUED
-P0102,W0102,Carina Müller,+436507758714,Yes,Yes,Cleaning,25,45,,,Afternoon,Yes,24,Yes,Full-time worker,1,0,2,0,2026-05-21,6,QUEUED
-P0103,W0103,Marie Schmid,+436881812172,Yes,No,Cleaning,23,26,,,Morning,Yes,19,Yes,Part-time worker,0,0,1,0,2026-05-29,6,QUEUED
-P0104,W0104,Maximilian Fuchs,+436503226333,Yes,Yes,Cleaning,54,19,,,Morning,No,,No,Full-time worker,1,0,0,0,2026-06-01,2,QUEUED
-P0105,W0105,Hannah Müller,+436644574477,Yes,Yes,Cleaning,16,14,,,Afternoon,Yes,22,Yes,Full-time worker,2,0,0,0,2026-04-15,5,QUEUED
-P0106,W0106,Philipp Maier,+436644446807,Yes,No,Pain,46,23,,,Any time,No,,No,Full-time worker,1,1,1,0,2026-05-27,0,QUEUED
-P0107,W0107,Eva Müller,+436992224599,Yes,Yes,Checkup,44,31,,,Afternoon,No,,No,Full-time worker,0,0,0,0,2026-05-10,0,QUEUED
-P0108,W0108,Sarah Hofer,+436882109227,Yes,Yes,Pain,9,30,,,Any time,Yes,13,Yes,Student,0,0,2,0,2026-05-22,1,QUEUED
-P0109,W0109,Thomas Berger,+436501492516,Yes,Yes,Checkup,54,21,,,Morning,Yes,12,Yes,Full-time worker,0,0,0,0,2026-04-06,6,QUEUED
-P0110,W0110,Andreas Wolf,+436991593302,Yes,Yes,Cleaning,10,5,,,Morning,No,,No,Full-time worker,1,1,0,0,2026-05-24,2,QUEUED
-P0111,W0111,Paul Bauer,+436806098752,Yes,Yes,Checkup,26,24,,,Morning,No,,No,Full-time worker,2,0,0,2,2026-06-02,6,QUEUED
-P0112,W0112,Felix Gruber,+436503388630,Yes,Yes,Checkup,32,24,,,Afternoon,Yes,27,Yes,Full-time worker,2,0,1,1,2026-06-01,3,QUEUED
-P0113,W0113,Andreas Hofer,+436504400953,Yes,Yes,Cleaning,25,30,,,Any time,Yes,18,Yes,Part-time worker,0,2,0,0,2026-05-24,2,QUEUED
-P0114,W0114,Sabine Lang,+436506013715,Yes,No,Checkup,21,25,,,Afternoon,Yes,16,Yes,Full-time worker,0,3,0,0,2026-06-03,2,QUEUED
-P0115,W0115,Manuel Schwarz,+436506562484,Yes,Yes,Cleaning,9,6,,,Morning,Yes,19,Yes,Part-time worker,0,0,4,2,2026-04-24,4,QUEUED
-P0116,W0116,Fabian Hofer,+436999821696,Yes,Yes,Checkup,43,35,,S0003,Morning,Yes,26,Yes,Full-time worker,0,3,0,0,2026-05-27,2,QUEUED
-P0117,W0117,Lena Egger,+436649953825,Yes,No,Checkup,38,27,,,Afternoon,No,,No,Unknown,3,2,0,3,2026-06-04,1,QUEUED
-P0118,W0118,Julian Lang,+436806185050,No,No,Cleaning,44,41,,,Any time,Yes,22,Yes,Full-time worker,0,0,0,0,2026-05-19,0,QUEUED
-P0119,W0119,Florian Lechner,+436646412383,No,Yes,Checkup,31,9,,,Morning,Yes,13,Yes,Full-time worker,0,0,2,1,2026-05-12,6,QUEUED
-P0120,W0120,Benjamin Gruber,+436644706007,Yes,Yes,Cleaning,41,30,,,Morning,Yes,15,Yes,Unknown,2,0,1,0,2026-06-01,0,QUEUED
-P0121,W0121,Benjamin Gruber,+436647297287,Yes,Yes,Cleaning,17,28,,,Afternoon,Yes,8,Yes,Student,0,0,1,0,2026-05-30,4,QUEUED
-P0122,W0122,Philipp Baumgartner,+436883768193,No,Yes,Checkup,26,43,S0003,,Afternoon,No,,No,Unknown,2,0,2,4,2026-06-02,2,QUEUED
-P0123,W0123,Jonas Gruber,+436642374659,Yes,Yes,Cleaning,26,45,,,Afternoon,No,,No,Full-time worker,1,0,2,1,2026-05-29,5,QUEUED
-P0124,W0124,Daniel Schwarz,+436994817030,Yes,No,Pain,25,26,,,Afternoon,No,,No,Student,1,1,1,0,2026-05-27,3,QUEUED
-P0125,W0125,Florian Wimmer,+436764387643,Yes,Yes,Pain,18,18,,,Morning,Yes,19,Yes,Full-time worker,4,1,2,0,2026-05-26,5,QUEUED
-P0126,W0126,Julia Eder,+436992694338,No,Yes,Checkup,21,23,,,Afternoon,No,,No,Student,2,1,1,1,2026-05-30,1,QUEUED
-P0127,W0127,Eva Lang,+436649248001,Yes,No,Checkup,35,22,,,Any time,No,,No,Part-time worker,3,1,3,0,2026-05-10,2,QUEUED
-P0128,W0128,Verena Lechner,+436999796063,Yes,Yes,Cleaning,11,37,,,Morning,Yes,31,Yes,Full-time worker,3,0,0,2,2026-05-25,5,QUEUED
-P0129,W0129,Andreas Berger,+436995339593,Yes,Yes,Pain,36,16,,,Any time,No,,No,Full-time worker,2,1,2,1,2026-05-17,3,QUEUED
-P0130,W0130,Thomas Aigner,+436885620085,Yes,Yes,Checkup,8,24,,,Afternoon,No,,No,Student,1,0,0,0,2026-05-26,2,QUEUED
-P0131,W0131,Hannah Reiter,+436886012883,Yes,No,Cleaning,5,15,,,Afternoon,Yes,20,Yes,Student,0,1,0,4,2026-05-25,4,QUEUED
-P0132,W0132,Manuel Lang,+436887014583,Yes,Yes,Cleaning,17,26,,,Any time,Yes,7,Yes,Unknown,1,2,2,2,2026-03-25,1,QUEUED
-P0133,W0133,Eva Berger,+436802194801,Yes,No,Cleaning,23,34,,,Afternoon,No,,No,Part-time worker,1,0,0,1,2026-05-29,3,QUEUED
-P0134,W0134,Sabine Pichler,+436644512853,Yes,Yes,Cleaning,39,26,,,Morning,No,,No,Full-time worker,2,0,2,1,2026-04-10,4,QUEUED
-P0135,W0135,Anna Baumgartner,+436646236039,Yes,Yes,Cleaning,38,17,,,Afternoon,Yes,10,Yes,Part-time worker,0,0,0,0,2026-04-10,5,QUEUED
-P0136,W0136,Stefan Aigner,+436809466346,Yes,Yes,Cleaning,30,6,,,Morning,No,,No,Unknown,0,0,0,0,2026-06-06,5,QUEUED
-P0137,W0137,Theresa Wagner,+436509729340,Yes,Yes,Checkup,38,14,,,Any time,Yes,14,Yes,Full-time worker,0,0,0,1,2026-06-06,0,QUEUED
-P0138,W0138,Sabine Eder,+436501213899,Yes,No,Cleaning,7,40,,,Morning,No,,No,Part-time worker,2,1,1,0,2026-05-20,1,QUEUED
-P0139,W0139,Florian Brunner,+436991769891,Yes,Yes,Pain,4,14,,,Morning,No,,No,Student,0,0,0,0,2026-06-01,5,QUEUED
-P0140,W0140,Sabine Lechner,+436602740017,Yes,Yes,Cleaning,34,15,,,Morning,Yes,9,Yes,Full-time worker,1,0,1,0,2026-04-07,1,QUEUED
-P0141,W0141,Anna Lang,+436809776214,Yes,No,Checkup,41,41,,,Any time,No,,No,Full-time worker,2,1,1,1,2026-05-22,2,QUEUED
-P0142,W0142,Tobias Wimmer,+436764942645,Yes,Yes,Pain,23,26,,,Any time,No,,No,Full-time worker,0,2,0,2,2026-06-06,2,QUEUED
-P0143,W0143,Verena Weber,+436808937865,Yes,Yes,Cleaning,34,26,S0001,,Any time,Yes,8,Yes,Part-time worker,2,0,0,0,2026-05-24,3,QUEUED
-P0144,W0144,Julia Mayer,+436886669584,Yes,Yes,Cleaning,20,12,S0002,,Afternoon,No,,No,Full-time worker,0,4,3,2,2026-05-29,4,QUEUED
-P0145,W0145,Julian Schwarz,+436768024028,Yes,No,Pain,7,8,,,Any time,No,,No,Student,4,1,1,0,2026-05-10,6,QUEUED
-P0146,W0146,Sabine Wolf,+436883225862,Yes,Yes,Cleaning,45,18,,,Afternoon,Yes,28,Yes,Unknown,4,0,2,0,2026-05-08,4,QUEUED
-P0147,W0147,Anna Winkler,+436645203716,Yes,Yes,Cleaning,15,9,,,Any time,Yes,17,Yes,Student,0,0,1,0,2026-05-16,3,QUEUED
-P0148,W0148,Paul Fuchs,+436998433377,Yes,Yes,Checkup,51,25,,,Any time,No,,No,Full-time worker,3,3,3,3,2026-04-26,3,QUEUED
-P0149,W0149,Paul Huber,+436883597208,Yes,Yes,Checkup,43,21,,,Afternoon,Yes,22,Yes,Full-time worker,0,1,0,1,2026-05-12,3,QUEUED
-P0150,W0150,Christian Weber,+436609900294,Yes,Yes,Cleaning,13,27,,,Morning,Yes,22,Yes,Full-time worker,1,0,1,0,2026-05-16,0,QUEUED
-P0151,W0151,Johanna Wolf,+436884229821,Yes,Yes,Checkup,38,28,,,Any time,No,,No,Part-time worker,0,0,0,2,2026-05-25,4,QUEUED
-P0152,W0152,Claudia Brunner,+436605226314,Yes,Yes,Checkup,48,14,,,Any time,Yes,6,Yes,Unknown,1,0,0,0,2026-06-06,2,QUEUED
-P0153,W0153,Jonas Aigner,+436991517059,Yes,No,Checkup,26,24,,,Morning,No,,No,Full-time worker,1,1,0,0,2026-05-12,4,QUEUED
-P0154,W0154,Johanna Weber,+436889599207,No,Yes,Checkup,24,18,,,Morning,No,,No,Unknown,0,0,1,0,2026-05-24,0,QUEUED
-P0155,W0155,Eva Berger,+436766508733,Yes,No,Cleaning,23,12,,,Any time,Yes,29,Yes,Student,2,0,0,0,2026-05-16,2,QUEUED
-P0156,W0156,Carina Fischer,+436993348838,Yes,Yes,Pain,27,36,S0002,,Any time,No,,No,Full-time worker,3,0,0,0,2026-06-01,4,QUEUED
-P0157,W0157,Claudia Wimmer,+436809563292,Yes,No,Pain,15,12,,,Any time,No,,No,Student,0,0,0,0,2026-05-31,6,QUEUED
-P0158,W0158,Benjamin Wolf,+436504469093,Yes,Yes,Cleaning,30,7,,,Afternoon,No,,No,Full-time worker,1,1,0,1,2026-05-15,5,QUEUED
-P0159,W0159,Alexander Mayer,+436801110690,Yes,Yes,Cleaning,22,38,,,Afternoon,Yes,23,Yes,Full-time worker,1,0,0,0,2026-06-04,3,QUEUED
-P0160,W0160,Manuel Pichler,+436801657513,Yes,Yes,Cleaning,34,6,,,Afternoon,No,,No,Full-time worker,3,0,0,1,2026-06-01,3,QUEUED
-P0161,W0161,Christian Maier,+436648607966,Yes,Yes,Checkup,21,29,,,Morning,No,,No,Student,1,0,0,0,2026-06-01,0,QUEUED
-P0162,W0162,Tobias Schmid,+436808057906,No,Yes,Checkup,46,39,,,Morning,Yes,32,Yes,Full-time worker,1,0,1,0,2026-06-02,4,QUEUED
-P0163,W0163,Sophie Steiner,+436996299951,Yes,Yes,Checkup,3,23,,,Afternoon,No,,No,Student,1,0,0,0,2026-05-28,1,QUEUED
-P0164,W0164,Sophie Hofer,+436763714471,No,Yes,Checkup,53,30,,,Morning,Yes,32,Yes,Full-time worker,0,1,2,2,2026-05-02,3,QUEUED
-P0165,W0165,Jonas Bauer,+436801964069,Yes,Yes,Checkup,54,29,,,Any time,Yes,4,Yes,Full-time worker,4,3,2,1,2026-06-06,3,QUEUED
-P0166,W0166,Daniel Wimmer,+436505773013,Yes,Yes,Cleaning,50,30,,,Afternoon,No,,No,Full-time worker,2,0,0,0,2026-06-03,4,QUEUED
-P0167,W0167,Julia Egger,+436809113963,Yes,Yes,Checkup,24,39,,,Morning,Yes,16,Yes,Full-time worker,2,2,3,1,2026-05-21,2,QUEUED
-P0168,W0168,Verena Weber,+436803994493,Yes,Yes,Checkup,11,12,,,Morning,No,,No,Student,1,0,1,0,2026-05-17,6,QUEUED
-P0169,W0169,Patrick Berger,+436991709057,Yes,Yes,Cleaning,6,8,,,Afternoon,Yes,10,Yes,Student,3,2,4,4,2026-05-31,3,QUEUED
-P0170,W0170,Alexander Berger,+436501198306,Yes,Yes,Cleaning,51,16,,,Afternoon,Yes,29,Yes,Full-time worker,2,0,0,0,2026-06-04,5,QUEUED
-P0171,W0171,Sophie Fischer,+436808251427,Yes,Yes,Cleaning,7,23,,,Morning,Yes,5,Yes,Student,3,0,2,1,2026-05-24,2,QUEUED
-P0172,W0172,Carina Brunner,+436641332781,Yes,Yes,Checkup,36,26,,,Any time,No,,No,Full-time worker,1,0,0,0,2026-05-12,3,QUEUED
-P0173,W0173,Birgit Hofer,+436762196955,No,Yes,Checkup,17,15,,,Morning,Yes,30,Yes,Full-time worker,0,0,0,1,2026-05-24,4,QUEUED
-P0174,W0174,Simon Mayer,+436761903041,Yes,Yes,Cleaning,49,10,,,Afternoon,No,,No,Unknown,0,0,1,0,2026-05-16,1,QUEUED
-P0175,W0175,Lukas Huber,+436883970181,Yes,No,Checkup,28,35,,,Morning,No,,No,Full-time worker,1,0,0,1,2026-05-27,2,QUEUED
-P0176,W0176,Alexander Brunner,+436999003857,Yes,Yes,Checkup,16,27,,,Morning,Yes,26,Yes,Full-time worker,0,1,1,0,2026-06-02,4,QUEUED
-P0177,W0177,Alexander Wimmer,+436992148634,Yes,No,Checkup,47,22,,,Afternoon,Yes,8,Yes,Full-time worker,0,0,0,0,2026-06-06,1,QUEUED
-P0178,W0178,Andreas Bauer,+436761532460,Yes,Yes,Cleaning,18,11,,,Afternoon,Yes,9,Yes,Student,0,1,2,0,2026-04-13,4,QUEUED
-P0179,W0179,Katharina Wolf,+436766236326,Yes,Yes,Cleaning,17,34,,,Afternoon,Yes,15,Yes,Unknown,4,0,1,1,2026-05-04,3,QUEUED
-P0180,W0180,Stefan Egger,+436763600333,Yes,Yes,Pain,12,30,,,Morning,No,,No,Part-time worker,1,0,0,0,2026-05-22,3,QUEUED
-P0181,W0181,Felix Weber,+436641662507,Yes,Yes,Cleaning,30,33,,,Morning,Yes,12,Yes,Full-time worker,1,1,0,1,2026-03-30,1,QUEUED
-P0182,W0182,Johanna Berger,+436995006173,Yes,Yes,Checkup,48,37,,,Any time,No,,No,Full-time worker,0,0,2,1,2026-05-26,1,QUEUED
-P0183,W0183,David Pichler,+436889219319,Yes,Yes,Cleaning,20,11,,,Any time,No,,No,Full-time worker,1,0,0,0,2026-05-25,3,QUEUED
-P0184,W0184,Magdalena Egger,+436609715516,Yes,No,Cleaning,47,22,,,Any time,No,,No,Full-time worker,0,0,0,0,2026-05-10,3,QUEUED
-P0185,W0185,Julia Pichler,+436646287423,Yes,Yes,Checkup,43,30,,,Any time,Yes,18,Yes,Full-time worker,1,3,1,0,2026-05-17,3,QUEUED
-P0186,W0186,Benjamin Huber,+436604604128,No,Yes,Checkup,43,6,,,Any time,No,,No,Unknown,3,0,1,0,2026-05-29,1,QUEUED
-P0187,W0187,Andreas Mayer,+436999095563,No,Yes,Checkup,13,41,,,Afternoon,Yes,23,Yes,Full-time worker,0,1,0,0,2026-05-11,5,QUEUED
-P0188,W0188,Andreas Wolf,+436643509536,Yes,Yes,Pain,46,5,,,Morning,No,,No,Full-time worker,0,1,0,1,2026-05-26,6,QUEUED
-P0189,W0189,Petra Wolf,+436609068540,Yes,Yes,Checkup,15,13,,,Afternoon,Yes,7,Yes,Student,1,0,0,0,2026-05-10,3,QUEUED
-P0190,W0190,Felix Berger,+436803446428,Yes,No,Checkup,9,24,S0003,,Morning,Yes,20,Yes,Full-time worker,1,1,0,0,2026-03-29,1,QUEUED
-P0191,W0191,Anna Leitner,+436883371416,Yes,Yes,Cleaning,39,18,,,Any time,Yes,2,Yes,Part-time worker,2,0,0,1,2026-05-24,3,QUEUED
-P0192,W0192,Julia Gruber,+436769918107,Yes,Yes,Pain,29,19,,,Morning,No,,No,Part-time worker,0,4,2,3,2026-05-27,0,QUEUED
-P0193,W0193,Lena Schneider,+436763302852,No,Yes,Cleaning,29,6,,,Any time,Yes,15,Yes,Part-time worker,0,4,3,3,2026-05-26,1,QUEUED
-P0194,W0194,David Hofer,+436803651604,No,Yes,Pain,41,13,,,Afternoon,No,,No,Full-time worker,0,0,2,0,2026-05-28,2,QUEUED
-P0195,W0195,Laura Wimmer,+436804874049,No,Yes,Cleaning,13,16,,,Morning,No,,No,Part-time worker,1,0,0,0,2026-04-26,4,QUEUED
-P0196,W0196,Christian Wimmer,+436608369982,Yes,Yes,Cleaning,22,31,,,Morning,Yes,35,Yes,Unknown,3,0,0,0,2026-05-24,1,QUEUED
-P0197,W0197,Markus Fischer,+436801827040,Yes,Yes,Cleaning,10,20,,,Morning,Yes,30,Yes,Full-time worker,0,0,1,1,2026-04-08,1,QUEUED
-P0198,W0198,Paul Eder,+436643751363,No,No,Checkup,6,16,,,Afternoon,Yes,4,Yes,Part-time worker,2,0,0,0,2026-05-18,2,QUEUED
-P0199,W0199,Stefan Lechner,+436884031576,Yes,Yes,Cleaning,25,6,,,Afternoon,No,,No,Student,0,0,0,0,2026-03-30,1,QUEUED
-P0200,W0200,Nina Bauer,+436601820721,Yes,Yes,Checkup,8,20,,,Afternoon,No,,No,Full-time worker,0,0,0,0,2026-05-30,0,QUEUED
+patient_id,waitlist_id,name,phone,consent_call,consent_message,desired_treatment,home_distance_min,work_distance_min,already_rejected_slots,being_contacted_for_slots,preferred_time_window,has_current_appointment,wants_earlier_slot,occupation,last_minute_accepted,no_response_count,cancellation_count,no_show_count,waitlist_since,visits_last_12_months,waitlist_status
+P0001,W0001,Lukas Wolf,+436761533224,Yes,No,Checkup,19,13,,,Morning,No,No,Part-time worker,0,0,1,0,2026-05-15,1,QUEUED
+P0002,W0002,Felix Wagner,+436803094235,Yes,No,Pain,6,16,,,Morning,No,No,Student,4,0,1,2,2026-06-01,3,QUEUED
+P0003,W0003,Paul Mayer,+436882197935,Yes,Yes,Pain,31,15,S0002,,Morning,No,No,Full-time worker,2,0,0,0,2026-06-02,2,QUEUED
+P0004,W0004,Marie Schneider,+436888187926,Yes,Yes,Cleaning,49,34,,,Afternoon,Yes,Yes,Full-time worker,3,0,0,3,2026-05-29,3,QUEUED
+P0005,W0005,Johanna Lechner,+436505924115,Yes,Yes,Checkup,48,12,,,Afternoon,Yes,Yes,Unknown,1,1,3,2,2026-05-24,1,QUEUED
+P0006,W0006,Patrick Leitner,+436802321324,Yes,Yes,Cleaning,15,28,,,Any time,Yes,Yes,Full-time worker,0,1,0,2,2026-04-04,4,QUEUED
+P0007,W0007,Julian Hofer,+436641352896,Yes,Yes,Cleaning,50,28,,,Morning,No,No,Full-time worker,1,0,0,0,2026-05-31,3,QUEUED
+P0008,W0008,Katharina Egger,+436991908841,Yes,Yes,Pain,34,17,,,Morning,Yes,Yes,Full-time worker,2,3,0,0,2026-05-26,2,QUEUED
+P0009,W0009,Maximilian Schneider,+436607728339,Yes,Yes,Cleaning,5,10,,,Any time,No,No,Unknown,3,0,2,4,2026-06-01,4,QUEUED
+P0010,W0010,Benjamin Leitner,+436504117625,No,Yes,Checkup,21,20,,,Morning,No,No,Student,0,0,1,0,2026-05-21,6,QUEUED
+P0011,W0011,Katharina Mayer,+436802677407,Yes,No,Pain,50,24,,,Any time,No,No,Full-time worker,0,0,0,2,2026-03-29,5,QUEUED
+P0012,W0012,Andrea Wagner,+436804533779,Yes,Yes,Pain,13,21,,,Any time,No,No,Unknown,2,0,0,0,2026-06-06,2,QUEUED
+P0013,W0013,Benjamin Fischer,+436801604451,Yes,No,Pain,35,40,,,Afternoon,No,No,Full-time worker,3,0,0,0,2026-05-12,2,QUEUED
+P0014,W0014,Birgit Wolf,+436886573147,Yes,No,Checkup,10,10,,,Any time,Yes,Yes,Student,2,3,3,1,2026-06-06,1,QUEUED
+P0015,W0015,Lukas Reiter,+436769996207,No,Yes,Pain,26,22,,,Morning,Yes,Yes,Part-time worker,0,0,2,0,2026-05-27,3,QUEUED
+P0016,W0016,Julian Eder,+436506539837,Yes,Yes,Checkup,20,26,,,Afternoon,Yes,Yes,Student,2,1,0,2,2026-05-28,3,QUEUED
+P0017,W0017,Theresa Weber,+436768418210,Yes,Yes,Checkup,27,23,,,Morning,Yes,Yes,Full-time worker,2,0,1,2,2026-05-02,4,QUEUED
+P0018,W0018,Maximilian Moser,+436769294272,No,Yes,Pain,44,9,,,Morning,No,No,Unknown,1,0,0,1,2026-05-09,5,QUEUED
+P0019,W0019,Andrea Winkler,+436808159521,No,Yes,Cleaning,43,25,,,Morning,No,No,Unknown,3,4,3,2,2026-05-31,1,QUEUED
+P0020,W0020,Eva Baumgartner,+436766551268,Yes,Yes,Checkup,16,14,,,Any time,No,No,Full-time worker,1,0,0,0,2026-05-31,5,QUEUED
+P0021,W0021,Johanna Wolf,+436887783308,Yes,Yes,Pain,46,19,,,Morning,No,No,Full-time worker,2,1,1,3,2026-05-30,3,QUEUED
+P0022,W0022,Marie Fischer,+436501873851,Yes,Yes,Checkup,29,22,,,Afternoon,No,No,Part-time worker,4,0,1,2,2026-06-05,3,QUEUED
+P0023,W0023,Markus Lang,+436606218367,No,Yes,Cleaning,28,15,,,Any time,No,No,Part-time worker,0,0,0,1,2026-05-16,6,QUEUED
+P0024,W0024,Jonas Weber,+436508273315,Yes,No,Checkup,31,9,,,Any time,No,No,Full-time worker,4,0,1,0,2026-05-26,2,QUEUED
+P0025,W0025,Daniel Baumgartner,+436609179730,Yes,Yes,Cleaning,37,41,,,Afternoon,Yes,Yes,Full-time worker,0,2,0,2,2026-05-30,4,QUEUED
+P0026,W0026,Tobias Hofer,+436886549757,Yes,Yes,Cleaning,20,24,,,Any time,No,No,Part-time worker,1,1,0,0,2026-05-31,4,QUEUED
+P0027,W0027,Julia Brunner,+436505901239,Yes,Yes,Checkup,19,28,,,Afternoon,Yes,Yes,Part-time worker,2,0,1,0,2026-06-03,5,QUEUED
+P0028,W0028,David Müller,+436994786401,Yes,Yes,Checkup,27,10,,,Morning,Yes,Yes,Full-time worker,2,4,1,2,2026-06-01,2,QUEUED
+P0029,W0029,Christian Fischer,+436504916201,Yes,Yes,Cleaning,38,23,,,Any time,No,No,Full-time worker,3,1,0,0,2026-06-01,6,QUEUED
+P0030,W0030,Nina Wagner,+436508248238,Yes,Yes,Checkup,27,30,,,Any time,Yes,Yes,Full-time worker,2,0,1,3,2026-05-31,5,QUEUED
+P0031,W0031,Manuel Eder,+436606533187,Yes,Yes,Cleaning,39,10,,,Afternoon,Yes,Yes,Full-time worker,1,0,0,0,2026-04-12,4,QUEUED
+P0032,W0032,Alexander Berger,+436648350368,Yes,Yes,Checkup,39,45,,,Any time,Yes,Yes,Full-time worker,3,0,0,0,2026-06-06,4,QUEUED
+P0033,W0033,Sabine Hofer,+436764197911,No,Yes,Checkup,25,31,,,Any time,Yes,Yes,Full-time worker,3,1,2,2,2026-05-31,1,QUEUED
+P0034,W0034,Markus Weber,+436885006492,Yes,No,Checkup,29,40,,,Morning,No,No,Full-time worker,1,0,2,0,2026-04-06,4,QUEUED
+P0035,W0035,Markus Wagner,+436765446344,Yes,Yes,Pain,37,5,,,Any time,No,No,Full-time worker,0,1,1,2,2026-06-04,5,QUEUED
+P0036,W0036,Benjamin Bauer,+436501771600,Yes,Yes,Cleaning,14,45,,,Afternoon,No,No,Full-time worker,0,0,0,1,2026-05-18,1,QUEUED
+P0037,W0037,Andreas Fischer,+436803650391,No,Yes,Checkup,37,21,,,Any time,Yes,Yes,Full-time worker,0,3,3,0,2026-06-04,6,QUEUED
+P0038,W0038,Anna Brunner,+436809333700,Yes,Yes,Cleaning,25,5,,,Afternoon,Yes,Yes,Full-time worker,3,1,1,0,2026-06-04,4,QUEUED
+P0039,W0039,Tobias Aigner,+436805572250,Yes,No,Checkup,31,16,,,Any time,Yes,Yes,Part-time worker,3,0,1,0,2026-05-21,4,QUEUED
+P0040,W0040,Sarah Egger,+436767232293,Yes,Yes,Pain,24,39,,,Morning,Yes,Yes,Full-time worker,0,0,0,1,2026-05-25,3,QUEUED
+P0041,W0041,Julia Wagner,+436808031780,Yes,No,Checkup,39,13,,,Morning,No,No,Part-time worker,1,0,1,0,2026-05-30,5,QUEUED
+P0042,W0042,Johanna Baumgartner,+436762538024,Yes,Yes,Cleaning,27,8,,,Any time,Yes,Yes,Unknown,2,0,0,0,2026-06-02,4,QUEUED
+P0043,W0043,Daniel Lechner,+436507010308,Yes,Yes,Checkup,13,39,,,Afternoon,No,No,Unknown,2,0,0,0,2026-05-08,0,QUEUED
+P0044,W0044,Benjamin Egger,+436997738019,Yes,Yes,Cleaning,47,38,,,Afternoon,Yes,Yes,Unknown,1,0,0,0,2026-04-13,5,QUEUED
+P0045,W0045,Fabian Schneider,+436767979148,No,Yes,Checkup,43,18,,,Afternoon,Yes,Yes,Full-time worker,2,0,0,0,2026-05-24,6,QUEUED
+P0046,W0046,Andrea Wagner,+436642738129,Yes,No,Checkup,50,32,,,Any time,Yes,Yes,Full-time worker,1,0,1,0,2026-04-10,0,QUEUED
+P0047,W0047,Stefan Mayer,+436503380261,Yes,Yes,Cleaning,27,26,,,Morning,Yes,Yes,Full-time worker,2,2,0,0,2026-05-13,2,QUEUED
+P0048,W0048,Daniel Fischer,+436762860421,Yes,Yes,Cleaning,39,43,,,Morning,No,No,Full-time worker,0,0,0,0,2026-05-14,0,QUEUED
+P0049,W0049,Martina Eder,+436507661748,Yes,No,Checkup,15,22,S0002,,Any time,No,No,Student,3,0,0,2,2026-06-01,5,QUEUED
+P0050,W0050,Sabine Aigner,+436646696087,Yes,Yes,Cleaning,35,11,,,Morning,No,No,Full-time worker,0,1,0,0,2026-06-04,3,QUEUED
+P0051,W0051,Stefan Wimmer,+436886422534,Yes,No,Cleaning,37,41,,,Morning,Yes,Yes,Full-time worker,3,1,0,0,2026-05-28,2,QUEUED
+P0052,W0052,Patrick Maier,+436994158134,Yes,No,Pain,37,42,,,Afternoon,No,No,Full-time worker,0,0,0,0,2026-06-01,0,QUEUED
+P0053,W0053,Jonas Berger,+436642105817,Yes,Yes,Pain,29,31,,,Any time,No,No,Unknown,0,1,0,0,2026-05-21,5,QUEUED
+P0054,W0054,Laura Maier,+436889831414,Yes,Yes,Pain,13,24,,,Any time,No,No,Full-time worker,0,0,0,0,2026-04-23,2,QUEUED
+P0055,W0055,Simon Leitner,+436803777286,Yes,Yes,Checkup,47,13,,,Any time,No,No,Full-time worker,2,0,0,0,2026-05-31,6,QUEUED
+P0056,W0056,Jonas Reiter,+436604350371,Yes,Yes,Checkup,33,34,,,Morning,Yes,Yes,Unknown,3,0,0,1,2026-05-31,5,QUEUED
+P0057,W0057,Sarah Aigner,+436762369112,Yes,Yes,Cleaning,33,27,,S0001,Any time,Yes,Yes,Part-time worker,1,4,3,3,2026-05-27,4,QUEUED
+P0058,W0058,Julia Wimmer,+436509385742,Yes,Yes,Cleaning,24,12,,,Morning,No,No,Part-time worker,1,0,0,0,2026-05-10,1,QUEUED
+P0059,W0059,Paul Lechner,+436645045421,Yes,Yes,Checkup,48,29,,,Any time,No,No,Full-time worker,2,3,3,2,2026-05-24,0,QUEUED
+P0060,W0060,Lena Hofer,+436765249899,Yes,Yes,Checkup,17,7,,,Any time,Yes,Yes,Part-time worker,0,0,0,1,2026-05-10,0,QUEUED
+P0061,W0061,Verena Mayer,+436642721307,Yes,No,Checkup,54,32,,,Morning,Yes,Yes,Full-time worker,0,0,0,0,2026-03-29,2,QUEUED
+P0062,W0062,Magdalena Winkler,+436503117788,Yes,Yes,Checkup,51,15,,,Morning,No,No,Full-time worker,0,2,2,2,2026-06-04,3,QUEUED
+P0063,W0063,Lukas Wolf,+436605791184,Yes,Yes,Checkup,38,29,,,Any time,No,No,Part-time worker,2,1,1,0,2026-05-25,1,QUEUED
+P0064,W0064,Julian Lang,+436604971774,Yes,Yes,Checkup,45,16,,,Any time,No,No,Unknown,2,0,1,0,2026-04-12,4,QUEUED
+P0065,W0065,David Leitner,+436884052834,Yes,No,Checkup,36,34,,,Morning,Yes,Yes,Full-time worker,2,0,1,2,2026-04-15,5,QUEUED
+P0066,W0066,Laura Schneider,+436886664316,Yes,No,Checkup,39,10,,,Morning,No,No,Part-time worker,3,0,1,0,2026-05-10,0,QUEUED
+P0067,W0067,Carina Moser,+436768792046,Yes,Yes,Pain,51,30,,,Morning,No,No,Full-time worker,0,0,0,0,2026-05-12,4,QUEUED
+P0068,W0068,David Wagner,+436886246485,No,No,Cleaning,15,24,S0002,,Any time,Yes,Yes,Student,0,0,3,0,2026-06-03,5,QUEUED
+P0069,W0069,Hannah Weber,+436507720644,Yes,Yes,Cleaning,6,18,,,Morning,No,No,Student,0,0,0,0,2026-04-29,2,QUEUED
+P0070,W0070,Laura Steiner,+436808666995,Yes,Yes,Cleaning,33,37,,,Morning,No,No,Full-time worker,0,1,0,2,2026-04-05,2,QUEUED
+P0071,W0071,Jonas Leitner,+436644817541,No,No,Checkup,34,42,,,Afternoon,Yes,Yes,Full-time worker,2,0,0,0,2026-04-01,3,QUEUED
+P0072,W0072,Sabine Steiner,+436606453426,Yes,Yes,Checkup,47,35,,,Morning,No,No,Full-time worker,4,1,0,3,2026-05-24,2,QUEUED
+P0073,W0073,Hannah Lang,+436643044708,Yes,No,Checkup,36,25,,,Any time,Yes,Yes,Part-time worker,1,0,1,0,2026-04-15,2,QUEUED
+P0074,W0074,Johanna Lang,+436502681042,Yes,Yes,Checkup,11,20,,,Morning,No,No,Part-time worker,1,0,0,1,2026-05-08,0,QUEUED
+P0075,W0075,Tobias Schneider,+436507660463,Yes,No,Cleaning,42,7,,,Any time,No,No,Full-time worker,2,3,4,1,2026-05-28,0,QUEUED
+P0076,W0076,Sophie Steiner,+436645949685,Yes,Yes,Checkup,29,15,,,Morning,No,No,Full-time worker,1,2,0,2,2026-04-26,5,QUEUED
+P0077,W0077,Katharina Fischer,+436602042273,Yes,Yes,Pain,29,24,,,Morning,No,No,Full-time worker,2,0,0,0,2026-05-14,6,QUEUED
+P0078,W0078,Elena Lang,+436802373555,Yes,Yes,Checkup,38,39,,,Morning,No,No,Full-time worker,1,1,0,2,2026-05-26,0,QUEUED
+P0079,W0079,Sarah Baumgartner,+436886170227,Yes,Yes,Cleaning,11,34,S0002,,Morning,Yes,Yes,Full-time worker,2,0,1,0,2026-05-03,3,QUEUED
+P0080,W0080,Magdalena Baumgartner,+436503994290,Yes,No,Checkup,32,29,,,Morning,No,No,Full-time worker,4,0,0,2,2026-05-25,5,QUEUED
+P0081,W0081,Benjamin Wimmer,+436801563316,Yes,No,Cleaning,24,18,,,Any time,No,No,Student,1,1,2,0,2026-05-24,0,QUEUED
+P0082,W0082,Petra Maier,+436645616316,Yes,Yes,Cleaning,28,20,,,Morning,Yes,Yes,Full-time worker,0,2,1,1,2026-05-25,3,QUEUED
+P0083,W0083,Katharina Lechner,+436607516590,Yes,No,Checkup,14,34,,,Morning,Yes,Yes,Part-time worker,0,3,4,3,2026-06-04,0,QUEUED
+P0084,W0084,Michael Aigner,+436606395804,Yes,Yes,Cleaning,12,35,S0001,,Morning,Yes,Yes,Part-time worker,2,2,2,1,2026-05-27,3,QUEUED
+P0085,W0085,Hannah Müller,+436645317226,Yes,Yes,Checkup,19,29,,,Morning,Yes,Yes,Part-time worker,2,0,0,0,2026-04-26,2,QUEUED
+P0086,W0086,Lukas Eder,+436509106820,Yes,Yes,Checkup,23,12,,,Morning,No,No,Student,2,0,0,0,2026-06-04,0,QUEUED
+P0087,W0087,Magdalena Mayer,+436642352527,Yes,Yes,Cleaning,13,28,,,Morning,Yes,Yes,Full-time worker,2,3,0,2,2026-05-08,3,QUEUED
+P0088,W0088,Andreas Steiner,+436801552000,Yes,Yes,Checkup,49,41,,,Any time,No,No,Unknown,0,1,0,0,2026-06-06,1,QUEUED
+P0089,W0089,Theresa Wimmer,+436992275374,No,Yes,Cleaning,52,10,,,Any time,Yes,Yes,Full-time worker,0,1,2,0,2026-05-16,4,QUEUED
+P0090,W0090,Patrick Hofer,+436887536772,Yes,Yes,Cleaning,53,9,,,Afternoon,Yes,Yes,Full-time worker,0,0,0,0,2026-05-09,2,QUEUED
+P0091,W0091,Theresa Gruber,+436803845129,Yes,No,Cleaning,29,10,,,Afternoon,Yes,Yes,Part-time worker,2,0,0,0,2026-06-04,1,QUEUED
+P0092,W0092,Julia Müller,+436763283789,Yes,No,Cleaning,30,26,,,Afternoon,Yes,Yes,Part-time worker,0,1,1,1,2026-05-08,1,QUEUED
+P0093,W0093,Manuel Steiner,+436884517316,Yes,No,Cleaning,42,16,,,Any time,Yes,Yes,Full-time worker,1,0,1,2,2026-05-16,4,QUEUED
+P0094,W0094,Petra Fuchs,+436802425760,Yes,Yes,Checkup,52,31,,,Any time,No,No,Full-time worker,0,0,0,0,2026-06-01,3,QUEUED
+P0095,W0095,Markus Berger,+436647978909,Yes,No,Cleaning,51,42,,,Morning,No,No,Full-time worker,3,0,2,1,2026-06-02,2,QUEUED
+P0096,W0096,Julian Wagner,+436803926839,Yes,No,Checkup,13,25,,,Morning,Yes,Yes,Student,1,0,0,0,2026-05-11,4,QUEUED
+P0097,W0097,Michael Mayer,+436762911847,No,Yes,Checkup,12,41,,,Any time,No,No,Full-time worker,0,1,0,0,2026-06-04,3,QUEUED
+P0098,W0098,Simon Müller,+436803313029,Yes,Yes,Pain,20,24,,,Any time,Yes,Yes,Part-time worker,1,0,0,0,2026-06-05,5,QUEUED
+P0099,W0099,Laura Steiner,+436769199017,Yes,Yes,Cleaning,43,37,,,Any time,Yes,Yes,Full-time worker,0,1,2,0,2026-05-27,0,QUEUED
+P0100,W0100,Benjamin Fischer,+436508545256,Yes,Yes,Checkup,35,11,,,Morning,Yes,Yes,Full-time worker,0,2,0,2,2026-05-12,0,QUEUED
+P0101,W0101,Maximilian Schwarz,+436649630451,Yes,Yes,Pain,25,43,,,Any time,No,No,Full-time worker,4,0,0,2,2026-03-24,4,QUEUED
+P0102,W0102,Carina Müller,+436507758714,Yes,Yes,Cleaning,25,45,,,Afternoon,Yes,Yes,Full-time worker,1,0,2,0,2026-05-21,6,QUEUED
+P0103,W0103,Marie Schmid,+436881812172,Yes,No,Cleaning,23,26,,,Morning,Yes,Yes,Part-time worker,0,0,1,0,2026-05-29,6,QUEUED
+P0104,W0104,Maximilian Fuchs,+436503226333,Yes,Yes,Cleaning,54,19,,,Morning,No,No,Full-time worker,1,0,0,0,2026-06-01,2,QUEUED
+P0105,W0105,Hannah Müller,+436644574477,Yes,Yes,Cleaning,16,14,,,Afternoon,Yes,Yes,Full-time worker,2,0,0,0,2026-04-15,5,QUEUED
+P0106,W0106,Philipp Maier,+436644446807,Yes,No,Pain,46,23,,,Any time,No,No,Full-time worker,1,1,1,0,2026-05-27,0,QUEUED
+P0107,W0107,Eva Müller,+436992224599,Yes,Yes,Checkup,44,31,,,Afternoon,No,No,Full-time worker,0,0,0,0,2026-05-10,0,QUEUED
+P0108,W0108,Sarah Hofer,+436882109227,Yes,Yes,Pain,9,30,,,Any time,Yes,Yes,Student,0,0,2,0,2026-05-22,1,QUEUED
+P0109,W0109,Thomas Berger,+436501492516,Yes,Yes,Checkup,54,21,,,Morning,Yes,Yes,Full-time worker,0,0,0,0,2026-04-06,6,QUEUED
+P0110,W0110,Andreas Wolf,+436991593302,Yes,Yes,Cleaning,10,5,,,Morning,No,No,Full-time worker,1,1,0,0,2026-05-24,2,QUEUED
+P0111,W0111,Paul Bauer,+436806098752,Yes,Yes,Checkup,26,24,,,Morning,No,No,Full-time worker,2,0,0,2,2026-06-02,6,QUEUED
+P0112,W0112,Felix Gruber,+436503388630,Yes,Yes,Checkup,32,24,,,Afternoon,Yes,Yes,Full-time worker,2,0,1,1,2026-06-01,3,QUEUED
+P0113,W0113,Andreas Hofer,+436504400953,Yes,Yes,Cleaning,25,30,,,Any time,Yes,Yes,Part-time worker,0,2,0,0,2026-05-24,2,QUEUED
+P0114,W0114,Sabine Lang,+436506013715,Yes,No,Checkup,21,25,,,Afternoon,Yes,Yes,Full-time worker,0,3,0,0,2026-06-03,2,QUEUED
+P0115,W0115,Manuel Schwarz,+436506562484,Yes,Yes,Cleaning,9,6,,,Morning,Yes,Yes,Part-time worker,0,0,4,2,2026-04-24,4,QUEUED
+P0116,W0116,Fabian Hofer,+436999821696,Yes,Yes,Checkup,43,35,,S0003,Morning,Yes,Yes,Full-time worker,0,3,0,0,2026-05-27,2,QUEUED
+P0117,W0117,Lena Egger,+436649953825,Yes,No,Checkup,38,27,,,Afternoon,No,No,Unknown,3,2,0,3,2026-06-04,1,QUEUED
+P0118,W0118,Julian Lang,+436806185050,No,No,Cleaning,44,41,,,Any time,Yes,Yes,Full-time worker,0,0,0,0,2026-05-19,0,QUEUED
+P0119,W0119,Florian Lechner,+436646412383,No,Yes,Checkup,31,9,,,Morning,Yes,Yes,Full-time worker,0,0,2,1,2026-05-12,6,QUEUED
+P0120,W0120,Benjamin Gruber,+436644706007,Yes,Yes,Cleaning,41,30,,,Morning,Yes,Yes,Unknown,2,0,1,0,2026-06-01,0,QUEUED
+P0121,W0121,Benjamin Gruber,+436647297287,Yes,Yes,Cleaning,17,28,,,Afternoon,Yes,Yes,Student,0,0,1,0,2026-05-30,4,QUEUED
+P0122,W0122,Philipp Baumgartner,+436883768193,No,Yes,Checkup,26,43,S0003,,Afternoon,No,No,Unknown,2,0,2,4,2026-06-02,2,QUEUED
+P0123,W0123,Jonas Gruber,+436642374659,Yes,Yes,Cleaning,26,45,,,Afternoon,No,No,Full-time worker,1,0,2,1,2026-05-29,5,QUEUED
+P0124,W0124,Daniel Schwarz,+436994817030,Yes,No,Pain,25,26,,,Afternoon,No,No,Student,1,1,1,0,2026-05-27,3,QUEUED
+P0125,W0125,Florian Wimmer,+436764387643,Yes,Yes,Pain,18,18,,,Morning,Yes,Yes,Full-time worker,4,1,2,0,2026-05-26,5,QUEUED
+P0126,W0126,Julia Eder,+436992694338,No,Yes,Checkup,21,23,,,Afternoon,No,No,Student,2,1,1,1,2026-05-30,1,QUEUED
+P0127,W0127,Eva Lang,+436649248001,Yes,No,Checkup,35,22,,,Any time,No,No,Part-time worker,3,1,3,0,2026-05-10,2,QUEUED
+P0128,W0128,Verena Lechner,+436999796063,Yes,Yes,Cleaning,11,37,,,Morning,Yes,Yes,Full-time worker,3,0,0,2,2026-05-25,5,QUEUED
+P0129,W0129,Andreas Berger,+436995339593,Yes,Yes,Pain,36,16,,,Any time,No,No,Full-time worker,2,1,2,1,2026-05-17,3,QUEUED
+P0130,W0130,Thomas Aigner,+436885620085,Yes,Yes,Checkup,8,24,,,Afternoon,No,No,Student,1,0,0,0,2026-05-26,2,QUEUED
+P0131,W0131,Hannah Reiter,+436886012883,Yes,No,Cleaning,5,15,,,Afternoon,Yes,Yes,Student,0,1,0,4,2026-05-25,4,QUEUED
+P0132,W0132,Manuel Lang,+436887014583,Yes,Yes,Cleaning,17,26,,,Any time,Yes,Yes,Unknown,1,2,2,2,2026-03-25,1,QUEUED
+P0133,W0133,Eva Berger,+436802194801,Yes,No,Cleaning,23,34,,,Afternoon,No,No,Part-time worker,1,0,0,1,2026-05-29,3,QUEUED
+P0134,W0134,Sabine Pichler,+436644512853,Yes,Yes,Cleaning,39,26,,,Morning,No,No,Full-time worker,2,0,2,1,2026-04-10,4,QUEUED
+P0135,W0135,Anna Baumgartner,+436646236039,Yes,Yes,Cleaning,38,17,,,Afternoon,Yes,Yes,Part-time worker,0,0,0,0,2026-04-10,5,QUEUED
+P0136,W0136,Stefan Aigner,+436809466346,Yes,Yes,Cleaning,30,6,,,Morning,No,No,Unknown,0,0,0,0,2026-06-06,5,QUEUED
+P0137,W0137,Theresa Wagner,+436509729340,Yes,Yes,Checkup,38,14,,,Any time,Yes,Yes,Full-time worker,0,0,0,1,2026-06-06,0,QUEUED
+P0138,W0138,Sabine Eder,+436501213899,Yes,No,Cleaning,7,40,,,Morning,No,No,Part-time worker,2,1,1,0,2026-05-20,1,QUEUED
+P0139,W0139,Florian Brunner,+436991769891,Yes,Yes,Pain,4,14,,,Morning,No,No,Student,0,0,0,0,2026-06-01,5,QUEUED
+P0140,W0140,Sabine Lechner,+436602740017,Yes,Yes,Cleaning,34,15,,,Morning,Yes,Yes,Full-time worker,1,0,1,0,2026-04-07,1,QUEUED
+P0141,W0141,Anna Lang,+436809776214,Yes,No,Checkup,41,41,,,Any time,No,No,Full-time worker,2,1,1,1,2026-05-22,2,QUEUED
+P0142,W0142,Tobias Wimmer,+436764942645,Yes,Yes,Pain,23,26,,,Any time,No,No,Full-time worker,0,2,0,2,2026-06-06,2,QUEUED
+P0143,W0143,Verena Weber,+436808937865,Yes,Yes,Cleaning,34,26,S0001,,Any time,Yes,Yes,Part-time worker,2,0,0,0,2026-05-24,3,QUEUED
+P0144,W0144,Julia Mayer,+436886669584,Yes,Yes,Cleaning,20,12,S0002,,Afternoon,No,No,Full-time worker,0,4,3,2,2026-05-29,4,QUEUED
+P0145,W0145,Julian Schwarz,+436768024028,Yes,No,Pain,7,8,,,Any time,No,No,Student,4,1,1,0,2026-05-10,6,QUEUED
+P0146,W0146,Sabine Wolf,+436883225862,Yes,Yes,Cleaning,45,18,,,Afternoon,Yes,Yes,Unknown,4,0,2,0,2026-05-08,4,QUEUED
+P0147,W0147,Anna Winkler,+436645203716,Yes,Yes,Cleaning,15,9,,,Any time,Yes,Yes,Student,0,0,1,0,2026-05-16,3,QUEUED
+P0148,W0148,Paul Fuchs,+436998433377,Yes,Yes,Checkup,51,25,,,Any time,No,No,Full-time worker,3,3,3,3,2026-04-26,3,QUEUED
+P0149,W0149,Paul Huber,+436883597208,Yes,Yes,Checkup,43,21,,,Afternoon,Yes,Yes,Full-time worker,0,1,0,1,2026-05-12,3,QUEUED
+P0150,W0150,Christian Weber,+436609900294,Yes,Yes,Cleaning,13,27,,,Morning,Yes,Yes,Full-time worker,1,0,1,0,2026-05-16,0,QUEUED
+P0151,W0151,Johanna Wolf,+436884229821,Yes,Yes,Checkup,38,28,,,Any time,No,No,Part-time worker,0,0,0,2,2026-05-25,4,QUEUED
+P0152,W0152,Claudia Brunner,+436605226314,Yes,Yes,Checkup,48,14,,,Any time,Yes,Yes,Unknown,1,0,0,0,2026-06-06,2,QUEUED
+P0153,W0153,Jonas Aigner,+436991517059,Yes,No,Checkup,26,24,,,Morning,No,No,Full-time worker,1,1,0,0,2026-05-12,4,QUEUED
+P0154,W0154,Johanna Weber,+436889599207,No,Yes,Checkup,24,18,,,Morning,No,No,Unknown,0,0,1,0,2026-05-24,0,QUEUED
+P0155,W0155,Eva Berger,+436766508733,Yes,No,Cleaning,23,12,,,Any time,Yes,Yes,Student,2,0,0,0,2026-05-16,2,QUEUED
+P0156,W0156,Carina Fischer,+436993348838,Yes,Yes,Pain,27,36,S0002,,Any time,No,No,Full-time worker,3,0,0,0,2026-06-01,4,QUEUED
+P0157,W0157,Claudia Wimmer,+436809563292,Yes,No,Pain,15,12,,,Any time,No,No,Student,0,0,0,0,2026-05-31,6,QUEUED
+P0158,W0158,Benjamin Wolf,+436504469093,Yes,Yes,Cleaning,30,7,,,Afternoon,No,No,Full-time worker,1,1,0,1,2026-05-15,5,QUEUED
+P0159,W0159,Alexander Mayer,+436801110690,Yes,Yes,Cleaning,22,38,,,Afternoon,Yes,Yes,Full-time worker,1,0,0,0,2026-06-04,3,QUEUED
+P0160,W0160,Manuel Pichler,+436801657513,Yes,Yes,Cleaning,34,6,,,Afternoon,No,No,Full-time worker,3,0,0,1,2026-06-01,3,QUEUED
+P0161,W0161,Christian Maier,+436648607966,Yes,Yes,Checkup,21,29,,,Morning,No,No,Student,1,0,0,0,2026-06-01,0,QUEUED
+P0162,W0162,Tobias Schmid,+436808057906,No,Yes,Checkup,46,39,,,Morning,Yes,Yes,Full-time worker,1,0,1,0,2026-06-02,4,QUEUED
+P0163,W0163,Sophie Steiner,+436996299951,Yes,Yes,Checkup,3,23,,,Afternoon,No,No,Student,1,0,0,0,2026-05-28,1,QUEUED
+P0164,W0164,Sophie Hofer,+436763714471,No,Yes,Checkup,53,30,,,Morning,Yes,Yes,Full-time worker,0,1,2,2,2026-05-02,3,QUEUED
+P0165,W0165,Jonas Bauer,+436801964069,Yes,Yes,Checkup,54,29,,,Any time,Yes,Yes,Full-time worker,4,3,2,1,2026-06-06,3,QUEUED
+P0166,W0166,Daniel Wimmer,+436505773013,Yes,Yes,Cleaning,50,30,,,Afternoon,No,No,Full-time worker,2,0,0,0,2026-06-03,4,QUEUED
+P0167,W0167,Julia Egger,+436809113963,Yes,Yes,Checkup,24,39,,,Morning,Yes,Yes,Full-time worker,2,2,3,1,2026-05-21,2,QUEUED
+P0168,W0168,Verena Weber,+436803994493,Yes,Yes,Checkup,11,12,,,Morning,No,No,Student,1,0,1,0,2026-05-17,6,QUEUED
+P0169,W0169,Patrick Berger,+436991709057,Yes,Yes,Cleaning,6,8,,,Afternoon,Yes,Yes,Student,3,2,4,4,2026-05-31,3,QUEUED
+P0170,W0170,Alexander Berger,+436501198306,Yes,Yes,Cleaning,51,16,,,Afternoon,Yes,Yes,Full-time worker,2,0,0,0,2026-06-04,5,QUEUED
+P0171,W0171,Sophie Fischer,+436808251427,Yes,Yes,Cleaning,7,23,,,Morning,Yes,Yes,Student,3,0,2,1,2026-05-24,2,QUEUED
+P0172,W0172,Carina Brunner,+436641332781,Yes,Yes,Checkup,36,26,,,Any time,No,No,Full-time worker,1,0,0,0,2026-05-12,3,QUEUED
+P0173,W0173,Birgit Hofer,+436762196955,No,Yes,Checkup,17,15,,,Morning,Yes,Yes,Full-time worker,0,0,0,1,2026-05-24,4,QUEUED
+P0174,W0174,Simon Mayer,+436761903041,Yes,Yes,Cleaning,49,10,,,Afternoon,No,No,Unknown,0,0,1,0,2026-05-16,1,QUEUED
+P0175,W0175,Lukas Huber,+436883970181,Yes,No,Checkup,28,35,,,Morning,No,No,Full-time worker,1,0,0,1,2026-05-27,2,QUEUED
+P0176,W0176,Alexander Brunner,+436999003857,Yes,Yes,Checkup,16,27,,,Morning,Yes,Yes,Full-time worker,0,1,1,0,2026-06-02,4,QUEUED
+P0177,W0177,Alexander Wimmer,+436992148634,Yes,No,Checkup,47,22,,,Afternoon,Yes,Yes,Full-time worker,0,0,0,0,2026-06-06,1,QUEUED
+P0178,W0178,Andreas Bauer,+436761532460,Yes,Yes,Cleaning,18,11,,,Afternoon,Yes,Yes,Student,0,1,2,0,2026-04-13,4,QUEUED
+P0179,W0179,Katharina Wolf,+436766236326,Yes,Yes,Cleaning,17,34,,,Afternoon,Yes,Yes,Unknown,4,0,1,1,2026-05-04,3,QUEUED
+P0180,W0180,Stefan Egger,+436763600333,Yes,Yes,Pain,12,30,,,Morning,No,No,Part-time worker,1,0,0,0,2026-05-22,3,QUEUED
+P0181,W0181,Felix Weber,+436641662507,Yes,Yes,Cleaning,30,33,,,Morning,Yes,Yes,Full-time worker,1,1,0,1,2026-03-30,1,QUEUED
+P0182,W0182,Johanna Berger,+436995006173,Yes,Yes,Checkup,48,37,,,Any time,No,No,Full-time worker,0,0,2,1,2026-05-26,1,QUEUED
+P0183,W0183,David Pichler,+436889219319,Yes,Yes,Cleaning,20,11,,,Any time,No,No,Full-time worker,1,0,0,0,2026-05-25,3,QUEUED
+P0184,W0184,Magdalena Egger,+436609715516,Yes,No,Cleaning,47,22,,,Any time,No,No,Full-time worker,0,0,0,0,2026-05-10,3,QUEUED
+P0185,W0185,Julia Pichler,+436646287423,Yes,Yes,Checkup,43,30,,,Any time,Yes,Yes,Full-time worker,1,3,1,0,2026-05-17,3,QUEUED
+P0186,W0186,Benjamin Huber,+436604604128,No,Yes,Checkup,43,6,,,Any time,No,No,Unknown,3,0,1,0,2026-05-29,1,QUEUED
+P0187,W0187,Andreas Mayer,+436999095563,No,Yes,Checkup,13,41,,,Afternoon,Yes,Yes,Full-time worker,0,1,0,0,2026-05-11,5,QUEUED
+P0188,W0188,Andreas Wolf,+436643509536,Yes,Yes,Pain,46,5,,,Morning,No,No,Full-time worker,0,1,0,1,2026-05-26,6,QUEUED
+P0189,W0189,Petra Wolf,+436609068540,Yes,Yes,Checkup,15,13,,,Afternoon,Yes,Yes,Student,1,0,0,0,2026-05-10,3,QUEUED
+P0190,W0190,Felix Berger,+436803446428,Yes,No,Checkup,9,24,S0003,,Morning,Yes,Yes,Full-time worker,1,1,0,0,2026-03-29,1,QUEUED
+P0191,W0191,Anna Leitner,+436883371416,Yes,Yes,Cleaning,39,18,,,Any time,Yes,Yes,Part-time worker,2,0,0,1,2026-05-24,3,QUEUED
+P0192,W0192,Julia Gruber,+436769918107,Yes,Yes,Pain,29,19,,,Morning,No,No,Part-time worker,0,4,2,3,2026-05-27,0,QUEUED
+P0193,W0193,Lena Schneider,+436763302852,No,Yes,Cleaning,29,6,,,Any time,Yes,Yes,Part-time worker,0,4,3,3,2026-05-26,1,QUEUED
+P0194,W0194,David Hofer,+436803651604,No,Yes,Pain,41,13,,,Afternoon,No,No,Full-time worker,0,0,2,0,2026-05-28,2,QUEUED
+P0195,W0195,Laura Wimmer,+436804874049,No,Yes,Cleaning,13,16,,,Morning,No,No,Part-time worker,1,0,0,0,2026-04-26,4,QUEUED
+P0196,W0196,Christian Wimmer,+436608369982,Yes,Yes,Cleaning,22,31,,,Morning,Yes,Yes,Unknown,3,0,0,0,2026-05-24,1,QUEUED
+P0197,W0197,Markus Fischer,+436801827040,Yes,Yes,Cleaning,10,20,,,Morning,Yes,Yes,Full-time worker,0,0,1,1,2026-04-08,1,QUEUED
+P0198,W0198,Paul Eder,+436643751363,No,No,Checkup,6,16,,,Afternoon,Yes,Yes,Part-time worker,2,0,0,0,2026-05-18,2,QUEUED
+P0199,W0199,Stefan Lechner,+436884031576,Yes,Yes,Cleaning,25,6,,,Afternoon,No,No,Student,0,0,0,0,2026-03-30,1,QUEUED
+P0200,W0200,Nina Bauer,+436601820721,Yes,Yes,Checkup,8,20,,,Afternoon,No,No,Full-time worker,0,0,0,0,2026-05-30,0,QUEUED

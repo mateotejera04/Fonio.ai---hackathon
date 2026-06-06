@@ -33,7 +33,6 @@ All fields come from the CSV. Field names below match the CSV columns exactly.
 
 **Soft variable inputs**
 - `has_current_appointment` — Yes / No
-- `current_appointment_days_left` — integer (days until current appointment) or N/A
 - `wants_earlier_slot` — Yes / No
 - `occupation` — Student | Part-time worker | Full-time worker | Unknown
 - `last_minute_accepted` — integer (count of accepted last-minute slots)
@@ -92,6 +91,8 @@ if has_current_appointment === "Yes" → use ASSIGNED formula
 if has_current_appointment === "No"  → use UNASSIGNED formula
 ```
 
+The two formulas use the same variables but different weights. Assigned patients already hold an appointment and are only worth moving for a clearly better slot, so the assigned formula leans harder on urgency and proximity. Unassigned patients have nothing booked, so fairness (waitlist age) carries more weight.
+
 ---
 
 ## Stage 3 — Individual Variable Scores
@@ -112,29 +113,7 @@ slot treatment = Cavity    → 1.0
 
 ---
 
-### 2. Appointment Improvement Score
-
-**Assigned patients only** (`has_current_appointment === "Yes"`).
-
-Measures how many days earlier the freed slot is compared to the patient's current appointment.
-
-```
-daysSaved = current_appointment_days_left - daysUntilFreedSlot
-```
-
-| Days Saved | Score |
-|---|---|
-| 0 or negative | 0.0 |
-| 1–2 days | 0.2 |
-| 3–6 days | 0.5 |
-| 7–13 days | 0.8 |
-| 14+ days | 1.0 |
-
-> For unassigned patients (`current_appointment_days_left === "N/A"`), this variable is not used.
-
----
-
-### 3. Proximity Score
+### 2. Proximity Score
 
 Use the best available distance.
 
@@ -154,7 +133,7 @@ bestDistance = min(home_distance_min, work_distance_min)
 
 ---
 
-### 4. Occupation Flexibility Score
+### 3. Occupation Flexibility Score
 
 Estimates how likely the candidate is available on short notice.
 
@@ -167,7 +146,7 @@ Estimates how likely the candidate is available on short notice.
 
 ---
 
-### 5. Last-Minute Acceptance Score
+### 4. Last-Minute Acceptance Score
 
 Rewards candidates who have accepted last-minute slots before.
 
@@ -180,7 +159,7 @@ Rewards candidates who have accepted last-minute slots before.
 
 ---
 
-### 6. No-Response Score
+### 5. No-Response Score
 
 Penalizes candidates who often do not answer.
 
@@ -193,7 +172,7 @@ Penalizes candidates who often do not answer.
 
 ---
 
-### 7. Cancellation History Score
+### 6. Cancellation History Score
 
 Penalizes candidates who frequently cancel.
 
@@ -206,7 +185,7 @@ Penalizes candidates who frequently cancel.
 
 ---
 
-### 8. No-Show History Score
+### 7. No-Show History Score
 
 Penalizes candidates who did not show up without cancelling. Weighted more severely than cancellations.
 
@@ -219,7 +198,7 @@ Penalizes candidates who did not show up without cancelling. Weighted more sever
 
 ---
 
-### 9. Waitlist Age Score
+### 8. Waitlist Age Score
 
 Adds fairness. Rewards patients who have been waiting longer.
 
@@ -236,7 +215,7 @@ daysWaiting = daysBetween(waitlist_since, today)
 
 ---
 
-### 10. Visit Frequency Score
+### 9. Visit Frequency Score
 
 Rewards regular clinic visitors.
 
@@ -268,7 +247,7 @@ hoursUntilSlot = hoursBetween(now, slot.startTime)
 ### How to apply the modifier
 
 ```
-baseProximityWeight     = formula.proximityWeight       // 0.12
+baseProximityWeight     = formula.proximityWeight       // 0.15 assigned / 0.12 unassigned
 modifiedProximityWeight = baseProximityWeight * multiplier
 
 remainingWeight         = 1.0 - modifiedProximityWeight
@@ -288,19 +267,20 @@ for each variable v (except proximity):
 Use when `has_current_appointment === "Yes"`.
 
 ```
-score = 0.25 * urgency_score
-      + 0.20 * appointment_improvement_score
-      + 0.15 * occupation_flexibility_score
-      + 0.12 * proximity_score              ← before modifier applied
-      + 0.08 * last_minute_acceptance_score
-      + 0.07 * waitlist_age_score
-      + 0.05 * visit_frequency_score
-      + 0.04 * no_response_score
-      + 0.03 * cancellation_history_score
+score = 0.31 * urgency_score
+      + 0.19 * occupation_flexibility_score
+      + 0.15 * proximity_score              ← before modifier applied
+      + 0.10 * last_minute_acceptance_score
+      + 0.09 * waitlist_age_score
+      + 0.06 * visit_frequency_score
+      + 0.05 * no_response_score
+      + 0.04 * cancellation_history_score
       + 0.01 * no_show_score
 ```
 
 Total base weight = **1.00**
+
+> Previously this formula carried a `0.20 * appointment_improvement_score` term. That variable was removed; its weight was redistributed proportionally (×1.25) across the remaining variables, so the formula still sums to 1.0.
 
 ---
 
@@ -322,8 +302,6 @@ score = 0.30 * urgency_score
 
 Total base weight = **1.00**
 
-> `appointment_improvement_score` is not used for unassigned patients.
-
 ---
 
 ## Stage 6 — Final Output
@@ -339,7 +317,6 @@ interface RankedCandidate {
   finalScore: number                      // 0.0 to 1.0
   variableScores: {
     urgency: number
-    appointmentImprovement?: number       // assigned only
     proximity: number
     proximityModifier: number             // multiplier applied
     occupationFlexibility: number
@@ -370,7 +347,6 @@ Filtered candidates included with `hardFilterPassed: false` for dashboard visibi
 | CSV Field | Value |
 |---|---|
 | `has_current_appointment` | Yes |
-| `current_appointment_days_left` | 14 |
 | `desired_treatment` | Cavity |
 | `home_distance_min` | 8 |
 | `work_distance_min` | 25 |
@@ -387,7 +363,6 @@ Filtered candidates included with `hardFilterPassed: false` for dashboard visibi
 **Variable scores:**
 ```
 urgency_score                 = 1.0   (Cavity)
-appointment_improvement_score = 0.8   (14 days saved → 7–13 bracket)
 proximity_score               = 1.0   (8 min → 0–10)
 occupation_flexibility_score  = 0.9   (Student)
 last_minute_acceptance_score  = 1.0   (3+)
@@ -398,26 +373,25 @@ waitlist_age_score            = 0.5   (10 days → 7–13)
 visit_frequency_score         = 0.7   (3 visits → 2–3)
 ```
 
-**Days until slot modifier (20 hours → 1.2x):**
+**Days until slot modifier (20 hours → 1.2x, assigned base proximity weight 0.15):**
 ```
-modifiedProximityWeight = 0.12 * 1.2 = 0.144
-scaleFactor = (1.0 - 0.144) / (1.0 - 0.12) = 0.856 / 0.88 = 0.9727
+modifiedProximityWeight = 0.15 * 1.2 = 0.18
+scaleFactor = (1.0 - 0.18) / (1.0 - 0.15) = 0.82 / 0.85 = 0.9647
 ```
 
 **Final score:**
 ```
-(0.25 * 0.9727) * 1.0  → 0.2432
-(0.20 * 0.9727) * 0.8  → 0.1556
-(0.15 * 0.9727) * 0.9  → 0.1308
- 0.144           * 1.0  → 0.1440  ← modified proximity
-(0.08 * 0.9727) * 1.0  → 0.0778
-(0.07 * 0.9727) * 0.5  → 0.0340
-(0.05 * 0.9727) * 0.7  → 0.0340
-(0.04 * 0.9727) * 1.0  → 0.0389
-(0.03 * 0.9727) * 0.8  → 0.0233
-(0.01 * 0.9727) * 1.0  → 0.0097
+(0.31 * 0.9647) * 1.0  → 0.2991
+(0.19 * 0.9647) * 0.9  → 0.1650
+ 0.18            * 1.0  → 0.1800  ← modified proximity
+(0.10 * 0.9647) * 1.0  → 0.0965
+(0.09 * 0.9647) * 0.5  → 0.0434
+(0.06 * 0.9647) * 0.7  → 0.0405
+(0.05 * 0.9647) * 1.0  → 0.0482
+(0.04 * 0.9647) * 0.8  → 0.0309
+(0.01 * 0.9647) * 1.0  → 0.0096
 
-Final Score ≈ 0.891
+Final Score ≈ 0.913
 ```
 
 ---
@@ -430,6 +404,5 @@ Final Score ≈ 0.891
 | `slot.startTime` before 08:00 or after 18:00 | Invalid slot → mark EXPIRED |
 | `preferred_time_window` is null | Treat as Any time, passes filter |
 | `visits_last_12_months` is null | Default to 0 → score 0.2 |
-| `current_appointment_days_left === "N/A"` on assigned patient | Data error → treat as unassigned |
 | All candidates filtered | Set slot status to NEEDS_HUMAN |
 | Score tie | Prefer candidate with higher `waitlist_age_score` |
