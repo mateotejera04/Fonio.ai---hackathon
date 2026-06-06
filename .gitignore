@@ -1,2 +1,3 @@
 .env
 .cred
+*.iam.json
