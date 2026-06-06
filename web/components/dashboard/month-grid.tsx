@@ -2,7 +2,8 @@ import { addDays, format, isSameDay, isSameMonth, isToday, startOfWeek } from "d
 import { CalendarX2 } from "lucide-react"
 
 import type { CalendarEvent } from "@/lib/calendar"
-import { Badge } from "@/components/ui/badge"
+import { EventDetailDialog } from "@/components/dashboard/event-detail-dialog"
+import { DayEventsDialog } from "@/components/dashboard/day-events-dialog"
 import {
   Empty,
   EmptyContent,
@@ -120,45 +121,65 @@ function DayCell({
       )}
     >
       <div className="flex items-center justify-between">
-        <span
-          className={cn(
-            "flex size-6 items-center justify-center rounded-full text-xs font-medium",
-            isCurrentDay
-              ? "bg-primary text-primary-foreground ring-2 ring-primary/30"
-              : isCurrentMonth
-                ? "text-foreground"
-                : "text-muted-foreground"
-          )}
-        >
-          {format(day, "d")}
-        </span>
+        <DayNumber
+          day={day}
+          events={events}
+          isCurrentDay={isCurrentDay}
+          isCurrentMonth={isCurrentMonth}
+        />
       </div>
-      <div className="flex flex-col gap-1 overflow-hidden">
+      <div className="flex flex-1 flex-col gap-1 overflow-hidden">
         {visibleEvents.map((event) => (
-          <Badge
-            key={event.id}
-            variant="outline"
-            className="block w-full max-w-full justify-start truncate px-1.5 text-left font-normal"
-            title={event.summary}
-          >
-            <span className="truncate">
-              {event.isAllDay ? (
-                <span className="text-muted-foreground">All day · </span>
-              ) : event.start ? (
-                <span className="text-muted-foreground">
-                  {format(new Date(event.start), "HH:mm")} ·{" "}
-                </span>
-              ) : null}
-              {event.summary}
-            </span>
-          </Badge>
+          <EventDetailDialog key={event.id} event={event} />
         ))}
         {hiddenCount > 0 && (
-          <span className="px-1.5 text-xs text-muted-foreground">
-            +{hiddenCount} more
-          </span>
+          <DayEventsDialog day={day.toISOString()} events={events}>
+            <button
+              type="button"
+              className="rounded px-1.5 py-0.5 text-left text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              +{hiddenCount} more
+            </button>
+          </DayEventsDialog>
         )}
       </div>
     </div>
+  )
+}
+
+function DayNumber({
+  day,
+  events,
+  isCurrentDay,
+  isCurrentMonth,
+}: {
+  day: Date
+  events: CalendarEvent[]
+  isCurrentDay: boolean
+  isCurrentMonth: boolean
+}) {
+  const className = cn(
+    "flex size-6 items-center justify-center rounded-full text-xs font-medium",
+    isCurrentDay
+      ? "bg-primary text-primary-foreground ring-2 ring-primary/30"
+      : isCurrentMonth
+        ? "text-foreground"
+        : "text-muted-foreground"
+  )
+
+  if (events.length === 0) {
+    return <span className={className}>{format(day, "d")}</span>
+  }
+
+  return (
+    <DayEventsDialog day={day.toISOString()} events={events}>
+      <button
+        type="button"
+        className={cn(className, "cursor-pointer hover:ring-2 hover:ring-primary/30")}
+        title={`${events.length} appointment${events.length === 1 ? "" : "s"}`}
+      >
+        {format(day, "d")}
+      </button>
+    </DayEventsDialog>
   )
 }
