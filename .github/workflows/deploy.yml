@@ -1,0 +1,60 @@
+name: Deploy to Hetzner
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build web image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./web
+          file: ./web/Dockerfile
+          push: false
+          tags: fonio-web:latest
+          outputs: type=docker
+
+      - name: Save and compress image
+        run: docker save fonio-web:latest | gzip > web.tar.gz
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Create remote project directory
+        run: |
+          ssh -i ~/.ssh/id_rsa "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+            "mkdir -p /root/projects/fonio-hackathon"
+
+      - name: Upload image and compose file
+        run: |
+          scp -i ~/.ssh/id_rsa \
+            web.tar.gz \
+            docker-compose.prod.yml \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/root/projects/fonio-hackathon/"
+
+      - name: Load image and restart service
+        run: |
+          ssh -i ~/.ssh/id_rsa "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" bash << 'ENDSSH'
+            set -e
+            cd /root/projects/fonio-hackathon
+
+            docker load -i web.tar.gz
+            rm -f web.tar.gz
+
+            docker compose -f docker-compose.prod.yml up -d --remove-orphans
+          ENDSSH

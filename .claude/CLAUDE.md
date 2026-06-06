@@ -33,5 +33,3 @@ Stack:
 
 You MUST use Shadcn components whenever possible.
 When asked to modify a component, check if it makes sense to modify the component at the shadcn level (eg. not every box should have className="rounded", do this at the shadcn component level)
-
-

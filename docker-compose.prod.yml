@@ -1,0 +1,6 @@
+services:
+  web:
+    image: fonio-web:latest
+    restart: unless-stopped
+    ports:
+      - "4322:3000"
