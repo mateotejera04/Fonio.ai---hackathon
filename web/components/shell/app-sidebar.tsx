@@ -56,7 +56,7 @@ export function AppSidebar({ recoveredRevenue }: { recoveredRevenue: string }) {
         <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground">
           <Stethoscope className="size-[18px]" />
         </span>
-        <span className="text-lg font-semibold tracking-tight">The Patient</span>
+        <span className="text-lg font-semibold tracking-tight">Dentist 5</span>
       </div>
 
       <nav className="flex-1 space-y-1 px-3 py-2">
