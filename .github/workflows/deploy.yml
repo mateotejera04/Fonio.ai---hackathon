@@ -40,11 +40,16 @@ jobs:
           ssh -i ~/.ssh/id_rsa "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
             "mkdir -p /root/projects/fonio-hackathon"
 
-      - name: Upload image and compose file
+      - name: Write deployment env file
+        run: |
+          printf 'CLOUDFLARE_TUNNEL_KEY=%s\n' "${{ secrets.CLOUDFLARE_TUNNEL_KEY }}" > .env
+
+      - name: Upload image, compose file and env
         run: |
           scp -i ~/.ssh/id_rsa \
             web.tar.gz \
             docker-compose.prod.yml \
+            .env \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/root/projects/fonio-hackathon/"
 
       - name: Load image and restart service

@@ -30,6 +30,12 @@ const FONIO_API_KEY = process.env.FONIO_API_KEY!;
 const FONIO_FROM_NUMBER = "+4369919210575";
 const OUTBOUND_CALL_URL = "https://app.fonio.ai/api/public/v1/outbound_call";
 
+const MAX_BOOKINGS = 2;
+const CASCADE_WINDOW_DAYS = 7;
+
+// Idempotency guard for the outbound-call-done webhook (best-effort callId dedupe).
+const processedCalls = new Set<string>();
+
 const auth = new google.auth.GoogleAuth({
   keyFile: path.resolve(__dirname, "../../.alfred.iam.json"),
   scopes: ["https://www.googleapis.com/auth/calendar.readonly"],
@@ -39,6 +45,7 @@ const calendar = google.calendar({ version: "v3", auth });
 app.use(express.json());
 
 interface WaitlistPerson {
+  waitlistId: string;
   phone: string;
   firstName: string;
   lastName: string;
@@ -57,6 +64,70 @@ interface AppointmentBody {
   extractionData?: {
     didCancel?: boolean | null;
   };
+}
+
+interface OutboundCallBody {
+  callId?: string;
+  id?: string;
+  _id?: string;
+  extractionData?: {
+    didSchedule?: boolean | null;
+  };
+  context?: Record<string, any>;
+}
+
+// ---- Date / slot helpers ----
+
+/** Manual parse of the "DD.MM.YYYY HH:MM" format used everywhere in this file. */
+function parseAppointmentDateTime(s: string): Date | null {
+  if (!s || typeof s !== "string") return null;
+
+  const match = s.trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})\s+(\d{1,2}):(\d{1,2})$/);
+  if (!match) return null;
+
+  const [, dayStr, monthStr, yearStr, hourStr, minuteStr] = match;
+  const day = Number(dayStr);
+  const month = Number(monthStr);
+  const year = Number(yearStr);
+  const hour = Number(hourStr);
+  const minute = Number(minuteStr);
+
+  if (
+    !Number.isFinite(day) ||
+    !Number.isFinite(month) ||
+    !Number.isFinite(year) ||
+    !Number.isFinite(hour) ||
+    !Number.isFinite(minute)
+  ) {
+    return null;
+  }
+
+  const date = new Date(year, month - 1, day, hour, minute, 0, 0);
+  if (Number.isNaN(date.getTime())) return null;
+
+  // Guard against JS `Date` rollover for invalid components (e.g. 31.02.2026).
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day ||
+    date.getHours() !== hour ||
+    date.getMinutes() !== minute
+  ) {
+    return null;
+  }
+
+  return date;
+}
+
+/** Stable id for a freed/offered slot — just the normalized start string. */
+function slotIdFromStart(appointmentStart: string): string {
+  return appointmentStart;
+}
+
+/** True iff `slotStart` is strictly in the future and within `CASCADE_WINDOW_DAYS` days. */
+function isWithinCascadeWindow(slotStart: Date, now: Date = new Date()): boolean {
+  const windowEnd = new Date(now.getTime() + CASCADE_WINDOW_DAYS * 24 * 60 * 60 * 1000);
+  return slotStart > now && slotStart <= windowEnd;
 }
 
 async function getRecentlyCancelledCalendarEvent(): Promise<AppointmentDetails | null> {
@@ -121,19 +192,21 @@ async function getRecentlyCancelledCalendarEvent(): Promise<AppointmentDetails |
   };
 }
 
-async function pickNextPersonFromWaitlist(): Promise<WaitlistPerson | null> {
+const INELIGIBLE_WAITLIST_STATUSES = new Set(["ACCEPTED", "DECLINED", "EXPIRED"]);
+
+async function pickNextPersonForSlot(slotId: string): Promise<WaitlistPerson | null> {
   const patients = await (await getWaitlist()).find({}).toArray();
   const ranked = rankWaitlist(patients);
 
-  // The #1 passing candidate — same person the frontend's waitlist ranking
-  // shows at rank #1 (rank is only assigned to candidates that pass the hard
-  // filter, so this is equivalent to `hardFilterPassed === true && rank === 1`).
   const top = ranked.find(
-    (candidate) => candidate.hardFilterPassed && candidate.rank === 1,
+    (candidate) =>
+      candidate.hardFilterPassed === true &&
+      !INELIGIBLE_WAITLIST_STATUSES.has(candidate.waitlist_status) &&
+      !candidate.already_rejected_slots?.includes(slotId),
   );
 
   if (!top) {
-    console.warn("[waitlist] no eligible candidate found");
+    console.warn(`[waitlist] no eligible candidate for slot ${slotId}`);
     return null;
   }
 
@@ -146,6 +219,7 @@ async function pickNextPersonFromWaitlist(): Promise<WaitlistPerson | null> {
   );
 
   return {
+    waitlistId: top.waitlist_id,
     phone: "+4367761244487", // override the Phone Number from the mock phone numbers in the list
     firstName,
     lastName,
@@ -161,6 +235,8 @@ async function pickNextPersonFromWaitlist(): Promise<WaitlistPerson | null> {
 async function callPersonAndScheduleBlock(
   person: WaitlistPerson,
   newSlot: AppointmentDetails,
+  slotId: string,
+  bookingNumber: number,
 ): Promise<void> {
   const [oldDate, oldTime] = person.appointmentDateTime.split(" ");
   const [newDate, newTime] = newSlot.appointmentStart.split(" ");
@@ -180,6 +256,9 @@ async function callPersonAndScheduleBlock(
       appointment_new_date: newDate,
       appointment_new_time: newTime,
       appointment_new_type: newSlot.appointmentType,
+      waitlist_id: person.waitlistId,
+      slot_id: slotId,
+      booking_number: bookingNumber,
     },
   };
 
@@ -203,19 +282,63 @@ async function callPersonAndScheduleBlock(
   console.log("[outbound] call initiated:", response.data);
 }
 
-async function handleCancelledAppointment(): Promise<void> {
-  const [person, appointment]: [
-    WaitlistPerson | null,
-    AppointmentDetails | null,
-  ] = await Promise.all([
-    pickNextPersonFromWaitlist(),
-    getRecentlyCancelledCalendarEvent(),
-  ]);
+// ---- DB update helpers ----
+
+async function markAccepted(waitlistId: string): Promise<void> {
+  try {
+    await (await getWaitlist()).updateOne(
+      { waitlist_id: waitlistId },
+      { $set: { waitlist_status: "ACCEPTED", updatedAt: new Date() } },
+    );
+  } catch (err) {
+    console.error(`[mongodb] failed to mark ${waitlistId} as ACCEPTED:`, err);
+  }
+}
+
+async function markRejectedForSlot(waitlistId: string, slotId: string): Promise<void> {
+  try {
+    await (await getWaitlist()).updateOne(
+      { waitlist_id: waitlistId },
+      {
+        $addToSet: { already_rejected_slots: slotId },
+        $set: { updatedAt: new Date() },
+      },
+    );
+  } catch (err) {
+    console.error(
+      `[mongodb] failed to record rejection of slot ${slotId} for ${waitlistId}:`,
+      err,
+    );
+  }
+}
+
+// ---- Single entry point for filling a freed/offered slot ----
+
+async function fillSlot(slot: AppointmentDetails, bookingNumber: number): Promise<void> {
+  const slotId = slotIdFromStart(slot.appointmentStart);
+  const person = await pickNextPersonForSlot(slotId);
 
   if (!person) {
-    console.error("[handler] no eligible waitlist candidate — aborting");
+    console.warn(
+      `[recovery] no eligible candidate for slot ${slotId} — leaving open (NEEDS_HUMAN)`,
+    );
     return;
   }
+
+  console.log(
+    `[recovery] filling slot ${slotId} (booking #${bookingNumber}) — offering to`,
+    person.firstName,
+    person.lastName,
+    "—",
+    person.appointmentDateTime,
+    person.appointmentType,
+  );
+
+  await callPersonAndScheduleBlock(person, slot, slotId, bookingNumber);
+}
+
+async function handleCancelledAppointment(): Promise<void> {
+  const appointment = await getRecentlyCancelledCalendarEvent();
 
   if (!appointment) {
     console.error(
@@ -225,16 +348,92 @@ async function handleCancelledAppointment(): Promise<void> {
   }
 
   console.log("[slot] freed up:", appointment);
+
+  await fillSlot(appointment, 1);
+}
+
+// ---- Done-handler: the heart of both recovery loops ----
+
+async function handleOutboundCallDone(body: OutboundCallBody): Promise<void> {
+  const callId = body?.callId ?? body?.id ?? body?._id;
+
+  if (callId) {
+    if (processedCalls.has(callId)) {
+      console.log(`[recovery] duplicate webhook for ${callId} — ignoring`);
+      return;
+    }
+    processedCalls.add(callId);
+  }
+
+  const ctx = body?.context ?? {};
+  const waitlistId = ctx?.waitlist_id;
+  const slotId = ctx?.slot_id;
+  const bookingNumber = Number(ctx?.booking_number ?? 1);
+  const didSchedule = body?.extractionData?.didSchedule;
+
+  if (!slotId || !waitlistId) {
+    console.log(
+      "[recovery] outbound-call-done missing slot_id/waitlist_id in context — not a managed call, ignoring",
+    );
+    return;
+  }
+
+  if (didSchedule !== true) {
+    // Loop 1: retry — the offered candidate declined (or no-show).
+    await markRejectedForSlot(waitlistId, slotId);
+
+    const offeredSlot: AppointmentDetails = {
+      appointmentStart: `${ctx?.appointment_new_date} ${ctx?.appointment_new_time}`,
+      appointmentType: ctx?.appointment_new_type,
+      durationMin: 30, // not used for the call
+    };
+
+    console.log(
+      `[retry] ${ctx?.first_name ?? ""} ${ctx?.last_name ?? ""} declined slot ${slotId} — offering to next candidate`,
+    );
+
+    await fillSlot(offeredSlot, bookingNumber);
+    return;
+  }
+
+  // Loop 2: cascade — the offered candidate accepted.
+  await markAccepted(waitlistId);
+
   console.log(
-    "[outbound] will offer to:",
-    person.firstName,
-    person.lastName,
-    "—",
-    person.appointmentDateTime,
-    person.appointmentType,
+    `[cascade] booking ${bookingNumber} filled: ${ctx?.first_name ?? ""} ${ctx?.last_name ?? ""} took slot ${slotId}`,
   );
 
-  await callPersonAndScheduleBlock(person, appointment);
+  if (bookingNumber >= MAX_BOOKINGS) {
+    console.log(`[cascade] reached max bookings (${MAX_BOOKINGS}) — stopping`);
+    return;
+  }
+
+  const freedStartStr = `${ctx?.appointment_old_date} ${ctx?.appointment_old_time}`;
+  const freedStart = parseAppointmentDateTime(freedStartStr);
+
+  if (!freedStart) {
+    console.error("[cascade] freed slot datetime unparseable — stopping");
+    return;
+  }
+
+  if (!isWithinCascadeWindow(freedStart)) {
+    console.log(
+      `[cascade] freed slot ${freedStartStr} is past or >7 days out — leaving open`,
+    );
+    return;
+  }
+
+  const freedSlotDetails: AppointmentDetails = {
+    appointmentStart: freedStartStr,
+    appointmentType: ctx?.appointment_old_type,
+    durationMin: 30,
+  };
+
+  console.log(
+    `[cascade] freed slot ${freedStartStr} within window — filling as booking ${bookingNumber + 1}`,
+  );
+
+  await fillSlot(freedSlotDetails, bookingNumber + 1);
 }
 
 app.post("/webhook/cancelled-appointment", (req: Request, res: Response) => {
@@ -263,6 +462,7 @@ app.post("/webhook/outbound-call-done", (req: Request, res: Response) => {
     .catch((err) => console.error("[mongodb] save error:", err));
 
   res.status(200).json({ received: true });
+  handleOutboundCallDone(req.body).catch(console.error);
 });
 
 app.listen(PORT, () => {
