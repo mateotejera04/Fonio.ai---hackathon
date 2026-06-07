@@ -48,8 +48,10 @@ jobs:
           printf 'CLOUDFLARE_TUNNEL_KEY=%s\n' "${{ secrets.CLOUDFLARE_TUNNEL_KEY }}" >> .env
 
       - name: Write Google Calendar service account key
+        env:
+          GOOGLE_CALENDAR_IAM: ${{ secrets.GOOGLE_CALENDAR_IAM }}
         run: |
-          printf '%s' "${{ secrets.GOOGLE_CALENDAR_IAM }}" > google-calendar-iam.json
+          printf '%s' "$GOOGLE_CALENDAR_IAM" > google-calendar-iam.json
 
       - name: Upload image, compose file and env
         run: |
