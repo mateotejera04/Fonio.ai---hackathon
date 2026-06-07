@@ -79,18 +79,27 @@ export function WeeklyCalendar() {
 
   useEffect(() => {
     let alive = true
-    setLoading(true)
     const from = weekStart.toISOString()
     const to = new Date(weekStart.getTime() + 7 * 86400000).toISOString()
-    fetch(`/api/calendar?from=${from}&to=${to}`, { cache: "no-store" })
-      .then((r) => r.json())
-      .then((d) => {
-        if (alive) setEvents(d.events ?? [])
-      })
-      .catch(() => alive && setEvents([]))
-      .finally(() => alive && setLoading(false))
+
+    const load = (showLoading: boolean) => {
+      if (showLoading) setLoading(true)
+      fetch(`/api/calendar?from=${from}&to=${to}`, { cache: "no-store" })
+        .then((r) => r.json())
+        .then((d) => {
+          if (alive) setEvents(d.events ?? [])
+        })
+        .catch(() => alive && setEvents([]))
+        .finally(() => {
+          if (alive && showLoading) setLoading(false)
+        })
+    }
+
+    load(true)
+    const id = setInterval(() => load(false), 3000)
     return () => {
       alive = false
+      clearInterval(id)
     }
   }, [weekStart])
 
