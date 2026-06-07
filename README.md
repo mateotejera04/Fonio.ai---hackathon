@@ -11,4 +11,3 @@
 - Complete webui including conversation and voice recording
 - Reroute to a human if the AI cannot assist further in edge cases
 - It can call back later based on time specified ("call me in 1 minute")
--  

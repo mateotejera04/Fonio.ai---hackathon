@@ -251,7 +251,7 @@ async function pickNextPersonForSlot(
     // reschedule already happened, so it needs a *different* old slot or it
     // would collide with the slot being offered (10.06.2026 11:00).
     appointmentDateTime:
-      bookingNumber >= 2 ? "12.06.2026 14:00" : "10.06.2026 11:00",
+      bookingNumber >= 2 ? "12.06.2026 17:00" : "10.06.2026 13:00",
   };
 }
 
@@ -264,6 +264,13 @@ async function callPersonAndScheduleBlock(
 ): Promise<void> {
   const [oldDate, oldTime] = person.appointmentDateTime.split(" ");
   const [newDate, newTime] = newSlot.appointmentStart.split(" ");
+
+  console.log(
+    "old",
+    person.appointmentDateTime,
+    "new",
+    newSlot.appointmentStart,
+  );
 
   const payload = {
     apiKey: FONIO_API_KEY,
