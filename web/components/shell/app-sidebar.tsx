@@ -11,6 +11,7 @@ import {
   LogOut,
   Settings,
   Stethoscope,
+  TrendingUp,
   Users,
 } from "lucide-react"
 
@@ -26,7 +27,8 @@ interface NavItem extends NavChild {
 }
 
 const NAV: NavItem[] = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/", label: "Overview", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Dashboard", icon: TrendingUp },
   {
     href: "/calendar",
     label: "Appointments",
