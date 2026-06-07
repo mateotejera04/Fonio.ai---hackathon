@@ -43,6 +43,9 @@ jobs:
       - name: Write deployment env file
         run: |
           printf '%s\n' "${{ secrets.DOT_ENV }}" > .env
+          # The tunnel token lives in its own secret; append it so Compose can
+          # interpolate ${CLOUDFLARE_TUNNEL_KEY} in docker-compose.prod.yml.
+          printf 'CLOUDFLARE_TUNNEL_KEY=%s\n' "${{ secrets.CLOUDFLARE_TUNNEL_KEY }}" >> .env
 
       - name: Upload image, compose file and env
         run: |
