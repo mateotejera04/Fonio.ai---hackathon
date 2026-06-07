@@ -17,23 +17,25 @@ function startOfWeek(d: Date): Date {
   return out
 }
 
-type Tone = "blue" | "green" | "amber" | "red"
+type Tone = "blue" | "green" | "amber" | "red" | "violet"
 const TONE: Record<Tone, string> = {
-  blue: "bg-blue-50 border-blue-200 text-blue-900",
-  green: "bg-emerald-50 border-emerald-200 text-emerald-900",
-  amber: "bg-amber-50 border-amber-200 text-amber-900",
-  red: "bg-red-50 border-red-200 text-red-900",
+  blue: "bg-blue-50 border-blue-300 text-blue-950",
+  green: "bg-emerald-50 border-emerald-300 text-emerald-950",
+  amber: "bg-amber-50 border-amber-300 text-amber-950",
+  red: "bg-red-50 border-red-300 text-red-950",
+  violet: "bg-violet-50 border-violet-300 text-violet-950",
 }
 const DOT: Record<Tone, string> = {
   blue: "bg-blue-500",
   green: "bg-emerald-500",
   amber: "bg-amber-500",
   red: "bg-red-500",
+  violet: "bg-violet-500",
 }
 
 function toneFor(e: CalendarEvent): Tone {
   if (e.status === "cancelled") return "red"
-  const s = (e.summary || "").toLowerCase()
+  const s = `${e.appointmentType ?? ""} ${e.summary || ""}`.toLowerCase()
   if (s.includes("clean") || s.includes("hygiene")) return "green"
   if (
     s.includes("pain") ||
@@ -44,7 +46,10 @@ function toneFor(e: CalendarEvent): Tone {
     s.includes("emergency")
   )
     return "amber"
-  return "blue"
+  if (s.includes("check") || s.includes("exam") || s.includes("control")) {
+    return "blue"
+  }
+  return "violet"
 }
 
 function durationMin(e: CalendarEvent): number | null {
@@ -206,11 +211,12 @@ export function WeeklyCalendar() {
                       const tone = toneFor(e)
                       const dur = durationMin(e)
                       const title = e.patientName ?? e.summary
+                      const appointmentType = e.appointmentType ?? "Appointment"
                       return (
                         <div
                           key={e.id}
                           className={cn("rounded-lg border p-1.5 text-xs", TONE[tone])}
-                          title={title}
+                          title={`${title} - ${appointmentType}`}
                         >
                           <div className="flex items-center gap-1">
                             <span className={cn("size-1.5 rounded-full", DOT[tone])} />
@@ -219,9 +225,16 @@ export function WeeklyCalendar() {
                             </span>
                           </div>
                           {dur != null && (
-                            <div className="mt-1 flex items-center gap-1 opacity-70">
-                              <Clock className="size-3" />
-                              {dur} min
+                            <div className="mt-1 flex items-center justify-between gap-1 opacity-75">
+                              <span className="flex min-w-0 items-center gap-1">
+                                <Clock className="size-3 shrink-0" />
+                                {dur} min
+                              </span>
+                              {e.appointmentType && (
+                                <span className="truncate font-medium">
+                                  {e.appointmentType}
+                                </span>
+                              )}
                             </div>
                           )}
                         </div>

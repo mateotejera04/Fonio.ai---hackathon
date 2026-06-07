@@ -1,6 +1,6 @@
 import { ListOrdered } from "lucide-react"
 
-import { WaitlistTable } from "@/components/dashboard/waitlist-table"
+import { WaitlistPageTable } from "@/components/dashboard/waitlist-page-table"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { type RankedWaitlistPatient } from "@/lib/waitlist"
 import { getRankedWaitlist } from "@/lib/waitlist.server"
@@ -45,7 +45,7 @@ export default async function WaitlistPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <WaitlistTable patients={patients} />
+          <WaitlistPageTable patients={patients} />
         </CardContent>
       </Card>
     </div>
