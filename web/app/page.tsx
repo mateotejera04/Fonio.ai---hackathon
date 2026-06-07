@@ -8,10 +8,10 @@ import { getCalendarEvents, type CalendarEvent } from "@/lib/calendar"
 import { getCalls, type CallSummary } from "@/lib/calls"
 import {
   formatEuro,
-  getRankedWaitlist,
   treatmentPrice,
   type RankedWaitlistPatient,
 } from "@/lib/waitlist"
+import { getRankedWaitlist } from "@/lib/waitlist.server"
 
 // Always render at request time so the dashboard reflects live data instead of
 // being prerendered (with empty data) at build time when the DB is unreachable.

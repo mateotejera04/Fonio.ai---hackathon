@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ListOrdered } from "lucide-react"
+import * as React from "react";
+import { ListOrdered } from "lucide-react";
 
-import type { RankedWaitlistPatient } from "@/lib/waitlist"
-import { Button } from "@/components/ui/button"
+import type { RankedWaitlistPatient } from "@/lib/waitlist";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -12,57 +12,57 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { WaitlistTable } from "@/components/dashboard/waitlist-table"
-import { WaitlistBreakdownDialog } from "@/components/dashboard/waitlist-breakdown-dialog"
+} from "@/components/ui/dialog";
+import { WaitlistTable } from "@/components/dashboard/waitlist-table";
+import { WaitlistBreakdownDialog } from "@/components/dashboard/waitlist-breakdown-dialog";
 
 interface WaitlistDialogProps {
-  patients: RankedWaitlistPatient[]
+  patients: RankedWaitlistPatient[];
 }
 
 export function WaitlistDialog({ patients }: WaitlistDialogProps) {
   const [selected, setSelected] = React.useState<RankedWaitlistPatient | null>(
-    null
-  )
-  const [breakdownOpen, setBreakdownOpen] = React.useState(false)
-  const [open, setOpen] = React.useState(false)
+    null,
+  );
+  const [breakdownOpen, setBreakdownOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
   const [livePatients, setLivePatients] =
-    React.useState<RankedWaitlistPatient[]>(patients)
+    React.useState<RankedWaitlistPatient[]>(patients);
 
   // Keep showing the latest server-rendered data until the dialog opens.
   React.useEffect(() => {
-    setLivePatients(patients)
-  }, [patients])
+    setLivePatients(patients);
+  }, [patients]);
 
   // While the dialog is open, refresh the ranked waitlist every second.
   React.useEffect(() => {
-    if (!open) return
+    if (!open) return;
 
-    let cancelled = false
+    let cancelled = false;
 
     async function refresh() {
       try {
-        const res = await fetch("/api/waitlist", { cache: "no-store" })
-        if (!res.ok) return
-        const data = (await res.json()) as RankedWaitlistPatient[]
-        if (!cancelled) setLivePatients(data)
+        const res = await fetch("/api/waitlist", { cache: "no-store" });
+        if (!res.ok) return;
+        const data = (await res.json()) as RankedWaitlistPatient[];
+        if (!cancelled) setLivePatients(data);
       } catch {
         // Transient fetch errors — keep the last good data and retry next tick.
       }
     }
 
-    refresh()
-    const id = setInterval(refresh, 1000)
+    refresh();
+    const id = setInterval(refresh, 1000);
 
     return () => {
-      cancelled = true
-      clearInterval(id)
-    }
-  }, [open])
+      cancelled = true;
+      clearInterval(id);
+    };
+  }, [open]);
 
   function handleSelect(patient: RankedWaitlistPatient) {
-    setSelected(patient)
-    setBreakdownOpen(true)
+    setSelected(patient);
+    setBreakdownOpen(true);
   }
 
   return (
@@ -72,7 +72,7 @@ export function WaitlistDialog({ patients }: WaitlistDialogProps) {
           <ListOrdered />
           View waitlist
         </DialogTrigger>
-        <DialogContent className="sm:max-w-5xl">
+        <DialogContent className="sm:max-w-[1200px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ListOrdered className="size-4 text-muted-foreground" />
@@ -97,5 +97,5 @@ export function WaitlistDialog({ patients }: WaitlistDialogProps) {
         onBack={() => setBreakdownOpen(false)}
       />
     </>
-  )
+  );
 }

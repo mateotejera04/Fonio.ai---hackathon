@@ -2,7 +2,8 @@ import { ListOrdered } from "lucide-react"
 
 import { WaitlistTable } from "@/components/dashboard/waitlist-table"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { getRankedWaitlist, type RankedWaitlistPatient } from "@/lib/waitlist"
+import { type RankedWaitlistPatient } from "@/lib/waitlist"
+import { getRankedWaitlist } from "@/lib/waitlist.server"
 
 // Rendered per request so the ranking reflects live waitlist data, rather than
 // being prerendered (empty) at build time when the DB is unreachable.

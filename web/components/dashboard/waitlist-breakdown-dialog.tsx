@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { ArrowLeft, ShieldAlert } from "lucide-react"
+import { ArrowLeft, ShieldAlert } from "lucide-react";
 
-import type { RankedWaitlistPatient } from "@/lib/waitlist"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import type { RankedWaitlistPatient } from "@/lib/waitlist";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -19,18 +19,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
 interface WaitlistBreakdownDialogProps {
-  patient: RankedWaitlistPatient | null
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  patient: RankedWaitlistPatient | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   /** Called when the user wants to go back to the waitlist list. */
-  onBack?: () => void
+  onBack?: () => void;
 }
 
 function fmt(n: number): string {
-  return n.toFixed(2)
+  return n.toFixed(2);
 }
 
 export function WaitlistBreakdownDialog({
@@ -68,9 +68,7 @@ export function WaitlistBreakdownDialog({
                 <span className="font-medium text-foreground">
                   {fmt(patient.finalScore)}
                 </span>
-                {patient.rank
-                  ? ` — currently ranked #${patient.rank}.`
-                  : "."}{" "}
+                {patient.rank ? ` — currently ranked #${patient.rank}.` : "."}{" "}
                 Each row is weight × score; the weights come from the{" "}
                 {patient.patientType} patient formula.
               </DialogDescription>
@@ -128,5 +126,5 @@ export function WaitlistBreakdownDialog({
         )}
       </DialogContent>
     </Dialog>
-  )
+  );
 }
