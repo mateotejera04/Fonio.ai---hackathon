@@ -102,7 +102,7 @@ We answer every Fonio webhook with `200` immediately and run the actual `didSche
 <details>
 <summary>Recording: Alfred reschedules Steffen's appointment (mp4)</summary>
 
-<video controls width="100%" src="https://raw.githubusercontent.com/mateotejera04/Fonio.ai---hackathon/main/materials/conversation-steffen-reschedule.mp4"></video>
+[conversation-steffen-reschedule.mp4](materials/conversation-steffen-reschedule.mp4)
 
 </details>
 
