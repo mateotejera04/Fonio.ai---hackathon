@@ -79,7 +79,7 @@ The single parts:
 - `requestedCallbackInMinutes`: we decided that the user might be busy and wanted to catch the edge case when he tells us "Please call me back in 10 minutes". If this variable is returned, we're stopping the calling and schedule another call after the amount of minutes given
 - `reachedMailbox`: if the assistant reaches the mailbox, it sends out an SMS telling the person to call us back for an appointment. For SMS sending we are also using the Fonio infrastructure.
 
-[Alfred sends an SMS](/materials/alfred-sms.jpeg)
+![Alfred sends an SMS](/materials/alfred-sms.jpeg)
 
 ### Cascade — refilling the slot the new patient frees up
 
