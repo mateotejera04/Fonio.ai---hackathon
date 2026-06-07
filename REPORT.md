@@ -107,6 +107,15 @@ We answer every Fonio webhook with `200` immediately and run the actual `didSche
 </details>
 
 <details>
+<summary>Alfred answers questions about the dentist office and reroutes to a human</summary>
+
+
+[reroute-human-compressed.mp4](materials/reroute-human-compressed.mp4)
+
+</details>
+
+
+<details>
 <summary>Waitlist and understanding why the next person is going to be picked</summary>
 
 ![Waitlist](materials/waitlist.png)
