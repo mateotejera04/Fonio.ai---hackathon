@@ -2,15 +2,12 @@ import path from "path"
 import dotenv from "dotenv"
 import { MongoClient, Db } from "mongodb"
 
-// MONGODB_URI lives in the repo-root .env, one level above web/.
+// In local dev, MONGODB_URI lives in the repo-root .env, one level above web/.
+// In production it is injected into the container environment (compose env_file),
+// so a missing file here is harmless — dotenv just no-ops.
 dotenv.config({ path: path.resolve(process.cwd(), "../.env") })
 
-const uri = process.env.MONGODB_URI
 const DB_NAME = process.env.MONGODB_DB || "fonio"
-
-if (!uri) {
-  throw new Error("MONGODB_URI is not set. Add it to the repo-root .env file.")
-}
 
 // Reuse the client across hot-reloads in dev to avoid exhausting connections.
 const globalForMongo = globalThis as unknown as {
@@ -19,7 +16,13 @@ const globalForMongo = globalThis as unknown as {
 
 function getClientPromise(): Promise<MongoClient> {
   if (!globalForMongo._mongoClientPromise) {
-    const client = new MongoClient(uri as string)
+    // Read the URI lazily so importing this module never throws — the check
+    // runs at request time, not at build/module-evaluation time.
+    const uri = process.env.MONGODB_URI
+    if (!uri) {
+      throw new Error("MONGODB_URI is not set. Provide it via the environment.")
+    }
+    const client = new MongoClient(uri)
     globalForMongo._mongoClientPromise = client.connect()
   }
   return globalForMongo._mongoClientPromise

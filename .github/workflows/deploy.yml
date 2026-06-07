@@ -42,7 +42,7 @@ jobs:
 
       - name: Write deployment env file
         run: |
-          printf 'CLOUDFLARE_TUNNEL_KEY=%s\n' "${{ secrets.CLOUDFLARE_TUNNEL_KEY }}" > .env
+          printf '%s\n' "${{ secrets.DOT_ENV }}" > .env
 
       - name: Upload image, compose file and env
         run: |

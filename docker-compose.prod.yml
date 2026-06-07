@@ -2,10 +2,15 @@ services:
   web:
     image: fonio-web:latest
     restart: unless-stopped
+    # Runtime config (MONGODB_URI, MONGODB_DB, FONIO_API_KEY, ...) from the
+    # .env shipped next to this file by the deploy workflow (secrets.DOT_ENV).
+    env_file:
+      - .env
 
   cloudflared:
     image: cloudflare/cloudflared:latest
     restart: unless-stopped
+    # ${CLOUDFLARE_TUNNEL_KEY} is interpolated from the same .env file.
     command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_KEY}
     depends_on:
       - web

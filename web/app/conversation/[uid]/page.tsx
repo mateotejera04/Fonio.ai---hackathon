@@ -44,6 +44,9 @@ function formatTimestamp(iso: string | null) {
   return format(date, "EEEE, MMM d · HH:mm")
 }
 
+// Rendered per request — depends on live call data from MongoDB.
+export const dynamic = "force-dynamic"
+
 export default async function ConversationPage({
   params,
 }: {

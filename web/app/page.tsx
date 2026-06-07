@@ -8,6 +8,10 @@ import { getCalendarEvents, type CalendarEvent } from "@/lib/calendar"
 import { getCalls, type CallSummary } from "@/lib/calls"
 import { getRankedWaitlist, type RankedWaitlistPatient } from "@/lib/waitlist"
 
+// Always render at request time so the dashboard reflects live data instead of
+// being prerendered (with empty data) at build time when the DB is unreachable.
+export const dynamic = "force-dynamic"
+
 async function loadCalendarEvents(): Promise<CalendarEvent[]> {
   try {
     return await getCalendarEvents()
