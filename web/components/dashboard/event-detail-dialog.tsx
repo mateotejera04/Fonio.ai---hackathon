@@ -40,28 +40,30 @@ export function EventDetailDialog({ event }: { event: CalendarEvent }) {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <button
-          type="button"
-          className="block w-full max-w-full text-left"
-          title={event.summary}
+      <DialogTrigger
+        render={
+          <button
+            type="button"
+            className="block w-full max-w-full text-left"
+            title={event.summary}
+          />
+        }
+      >
+        <Badge
+          variant="outline"
+          className="block w-full max-w-full cursor-pointer justify-start truncate px-1.5 text-left font-normal transition-colors hover:bg-muted"
         >
-          <Badge
-            variant="outline"
-            className="block w-full max-w-full cursor-pointer justify-start truncate px-1.5 text-left font-normal transition-colors hover:bg-muted"
-          >
-            <span className="truncate">
-              {event.isAllDay ? (
-                <span className="text-muted-foreground">All day · </span>
-              ) : event.start ? (
-                <span className="text-muted-foreground">
-                  {format(new Date(event.start), "HH:mm")} ·{" "}
-                </span>
-              ) : null}
-              {event.summary}
-            </span>
-          </Badge>
-        </button>
+          <span className="truncate">
+            {event.isAllDay ? (
+              <span className="text-muted-foreground">All day · </span>
+            ) : event.start ? (
+              <span className="text-muted-foreground">
+                {format(new Date(event.start), "HH:mm")} ·{" "}
+              </span>
+            ) : null}
+            {event.summary}
+          </span>
+        </Badge>
       </DialogTrigger>
 
       <DialogContent>

@@ -5,6 +5,8 @@ import express, { Request, Response } from "express";
 import axios from "axios";
 import { google } from "googleapis";
 import mongoose, { Schema, Document } from "mongoose";
+import { getWaitlist } from "./db/client";
+import { rankWaitlist } from "./ranking";
 
 mongoose
   .connect(process.env.MONGODB_URI!)
@@ -12,7 +14,12 @@ mongoose
   .catch((err) => console.error("[mongodb] connection error:", err));
 
 const callSchema = new Schema(
-  { callType: { type: String, enum: ["inbound_cancellation", "outbound_confirmation"] } },
+  {
+    callType: {
+      type: String,
+      enum: ["inbound_cancellation", "outbound_confirmation"],
+    },
+  },
   { strict: false, timestamps: true },
 );
 const Call = mongoose.model("Call", callSchema, "calls");
@@ -114,15 +121,40 @@ async function getRecentlyCancelledCalendarEvent(): Promise<AppointmentDetails |
   };
 }
 
-async function pickNextPersonFromWaitlist(): Promise<WaitlistPerson> {
-  // placeholder — replace with real DB/CRM lookup
+async function pickNextPersonFromWaitlist(): Promise<WaitlistPerson | null> {
+  const patients = await (await getWaitlist()).find({}).toArray();
+  const ranked = rankWaitlist(patients);
+
+  // The #1 passing candidate — same person the frontend's waitlist ranking
+  // shows at rank #1 (rank is only assigned to candidates that pass the hard
+  // filter, so this is equivalent to `hardFilterPassed === true && rank === 1`).
+  const top = ranked.find(
+    (candidate) => candidate.hardFilterPassed && candidate.rank === 1,
+  );
+
+  if (!top) {
+    console.warn("[waitlist] no eligible candidate found");
+    return null;
+  }
+
+  const nameParts = top.name.trim().split(/\s+/).filter(Boolean);
+  const firstName = nameParts[0] ?? "";
+  const lastName = nameParts.slice(1).join(" ");
+
+  console.log(
+    `[waitlist] picked ${firstName} ${lastName} (rank #${top.rank}, finalScore ${top.finalScore.toFixed(4)})`,
+  );
+
   return {
-    phone: "+4367761244487",
-    firstName: "Philipp",
-    lastName: "Scheer",
+    phone: "+4367761244487", // override the Phone Number from the mock phone numbers in the list
+    firstName,
+    lastName,
+    // override the email with my personal
     email: "scheer28philipp@gmail.com",
-    appointmentDateTime: "18.06.2026 10:00",
-    appointmentType: "Dental Appointment",
+    appointmentType: top.desired_treatment,
+    // The waitlist schema has no stored appointment datetime for the patient's
+    // existing/old slot — the dataset doesn't carry it, so leave blank.
+    appointmentDateTime: "18.06.2025 10:00",
   };
 }
 
@@ -151,18 +183,39 @@ async function callPersonAndScheduleBlock(
     },
   };
 
-  console.log("[outbound] calling", person.firstName, person.lastName, person.phone);
-  console.log("[outbound] old slot:", person.appointmentDateTime, person.appointmentType);
-  console.log("[outbound] new slot:", newSlot.appointmentStart, newSlot.appointmentType);
+  console.log(
+    "[outbound] calling",
+    person.firstName,
+    person.lastName,
+    person.phone,
+  );
+  console.log(
+    "[outbound] old slot:",
+    person.appointmentDateTime,
+    person.appointmentType,
+  );
+  console.log(
+    "[outbound] new slot:",
+    newSlot.appointmentStart,
+    newSlot.appointmentType,
+  );
   const response = await axios.post(OUTBOUND_CALL_URL, payload);
   console.log("[outbound] call initiated:", response.data);
 }
 
 async function handleCancelledAppointment(): Promise<void> {
-  const [person, appointment] = await Promise.all([
+  const [person, appointment]: [
+    WaitlistPerson | null,
+    AppointmentDetails | null,
+  ] = await Promise.all([
     pickNextPersonFromWaitlist(),
     getRecentlyCancelledCalendarEvent(),
   ]);
+
+  if (!person) {
+    console.error("[handler] no eligible waitlist candidate — aborting");
+    return;
+  }
 
   if (!appointment) {
     console.error(
@@ -188,9 +241,9 @@ app.post("/webhook/cancelled-appointment", (req: Request, res: Response) => {
   console.log("[webhook] cancelled-appointment received:");
   console.log(JSON.stringify(req.body, null, 2));
 
-  new Call({ ...req.body, callType: "inbound_cancellation" }).save().catch((err) =>
-    console.error("[mongodb] save error:", err),
-  );
+  new Call({ ...req.body, callType: "inbound_cancellation" })
+    .save()
+    .catch((err) => console.error("[mongodb] save error:", err));
 
   if (req.body?.extractionData?.didCancel === true) {
     res.status(200).json({ received: true });
@@ -205,9 +258,9 @@ app.post("/webhook/outbound-call-done", (req: Request, res: Response) => {
   console.log("[webhook] outbound-call-done received:");
   console.log(JSON.stringify(req.body, null, 2));
 
-  new Call({ ...req.body, callType: "outbound_confirmation" }).save().catch((err) =>
-    console.error("[mongodb] save error:", err),
-  );
+  new Call({ ...req.body, callType: "outbound_confirmation" })
+    .save()
+    .catch((err) => console.error("[mongodb] save error:", err));
 
   res.status(200).json({ received: true });
 });

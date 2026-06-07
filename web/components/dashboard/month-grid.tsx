@@ -133,13 +133,17 @@ function DayCell({
           <EventDetailDialog key={event.id} event={event} />
         ))}
         {hiddenCount > 0 && (
-          <DayEventsDialog day={day.toISOString()} events={events}>
-            <button
-              type="button"
-              className="rounded px-1.5 py-0.5 text-left text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            >
-              +{hiddenCount} more
-            </button>
+          <DayEventsDialog
+            day={day.toISOString()}
+            events={events}
+            trigger={
+              <button
+                type="button"
+                className="rounded px-1.5 py-0.5 text-left text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              />
+            }
+          >
+            +{hiddenCount} more
           </DayEventsDialog>
         )}
       </div>
@@ -172,14 +176,18 @@ function DayNumber({
   }
 
   return (
-    <DayEventsDialog day={day.toISOString()} events={events}>
-      <button
-        type="button"
-        className={cn(className, "cursor-pointer hover:ring-2 hover:ring-primary/30")}
-        title={`${events.length} appointment${events.length === 1 ? "" : "s"}`}
-      >
-        {format(day, "d")}
-      </button>
+    <DayEventsDialog
+      day={day.toISOString()}
+      events={events}
+      trigger={
+        <button
+          type="button"
+          className={cn(className, "cursor-pointer hover:ring-2 hover:ring-primary/30")}
+          title={`${events.length} appointment${events.length === 1 ? "" : "s"}`}
+        />
+      }
+    >
+      {format(day, "d")}
     </DayEventsDialog>
   )
 }

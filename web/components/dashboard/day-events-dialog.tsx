@@ -37,10 +37,12 @@ function durationLabel(event: CalendarEvent): string | null {
 export function DayEventsDialog({
   day,
   events,
+  trigger,
   children,
 }: {
   day: string // ISO
   events: CalendarEvent[]
+  trigger: React.ReactElement
   children: React.ReactNode
 }) {
   const date = new Date(day)
@@ -52,7 +54,7 @@ export function DayEventsDialog({
 
   return (
     <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger render={trigger}>{children}</DialogTrigger>
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle className="font-heading text-xl">

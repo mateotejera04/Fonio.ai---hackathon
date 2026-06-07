@@ -2,9 +2,11 @@ import { Activity, CalendarDays } from "lucide-react"
 
 import { ConversationList } from "@/components/dashboard/conversation-list"
 import { MonthGrid } from "@/components/dashboard/month-grid"
+import { WaitlistDialog } from "@/components/dashboard/waitlist-dialog"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { getCalendarEvents, type CalendarEvent } from "@/lib/calendar"
 import { getCalls, type CallSummary } from "@/lib/calls"
+import { getRankedWaitlist, type RankedWaitlistPatient } from "@/lib/waitlist"
 
 async function loadCalendarEvents(): Promise<CalendarEvent[]> {
   try {
@@ -22,27 +24,39 @@ async function loadCalls(): Promise<CallSummary[]> {
   }
 }
 
+async function loadWaitlist(): Promise<RankedWaitlistPatient[]> {
+  try {
+    return await getRankedWaitlist()
+  } catch {
+    return []
+  }
+}
+
 export default async function Home() {
-  const [events, calls] = await Promise.all([
+  const [events, calls, waitlist] = await Promise.all([
     loadCalendarEvents(),
     loadCalls(),
+    loadWaitlist(),
   ])
 
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
-      <header className="mb-10 flex items-start gap-3">
-        <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground">
-          <Activity className="size-5" />
+      <header className="mb-10 flex items-start justify-between gap-3">
+        <div className="flex items-start gap-3">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground">
+            <Activity className="size-5" />
+          </div>
+          <div>
+            <h1 className="font-heading text-2xl font-semibold tracking-tight">
+              Clinic dashboard
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              A look at your upcoming schedule and the conversations currently
+              working to fill open slots.
+            </p>
+          </div>
         </div>
-        <div>
-          <h1 className="font-heading text-2xl font-semibold tracking-tight">
-            Clinic dashboard
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            A look at your upcoming schedule and the conversations currently
-            working to fill open slots.
-          </p>
-        </div>
+        <WaitlistDialog patients={waitlist} />
       </header>
 
       <div className="flex flex-col gap-8">

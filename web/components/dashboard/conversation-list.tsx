@@ -11,6 +11,7 @@ import {
 import type { VariantProps } from "class-variance-authority"
 
 import type { CallSummary } from "@/lib/calls"
+import { cn } from "@/lib/utils"
 import { Badge, badgeVariants } from "@/components/ui/badge"
 import {
   Empty,
@@ -47,6 +48,22 @@ function callTypeLabel(callType: string) {
 
 function callTypeVariant(callType: string): BadgeVariant {
   return CALL_TYPE_VARIANT[callType] ?? "secondary"
+}
+
+/**
+ * Border color for a conversation row, based on call direction/type:
+ * - Inbound bookings (any inbound call that isn't a cancellation) -> green
+ * - Inbound cancellations -> red
+ * - Outbound calls -> blue
+ */
+function callBorderColor(direction: string, callType: string) {
+  if (direction === "outbound") {
+    return "border-blue-500 dark:border-blue-400"
+  }
+  if (callType === "inbound_cancellation") {
+    return "border-red-500 dark:border-red-400"
+  }
+  return "border-green-500 dark:border-green-400"
 }
 
 function formatDuration(seconds: number) {
@@ -100,6 +117,7 @@ export function ConversationList({ calls }: ConversationListProps) {
           <Item
             key={call._id}
             variant="outline"
+            className={cn(callBorderColor(call.direction, call.callType))}
             render={<Link href={`/conversation/${call._id}`} />}
           >
             <ItemMedia variant="icon">
