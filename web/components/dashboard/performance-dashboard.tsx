@@ -31,7 +31,6 @@ interface DashboardData {
   outcomes: { label: string; value: number }[]
   treatments: { label: string; value: number; color: string }[]
   trend: { day: string; slots: number; revenue: number }[]
-  updatedAt: Date
 }
 
 const BASE_DATA: DashboardData = {
@@ -61,36 +60,6 @@ const BASE_DATA: DashboardData = {
     { day: "Sat", slots: 0, revenue: 0 },
     { day: "Sun", slots: 0, revenue: 0 },
   ],
-  updatedAt: new Date(),
-}
-
-function buildData(tick: number): DashboardData {
-  const wave = tick % 5
-  const recovered = BASE_DATA.recovered + (wave >= 3 ? 1 : 0)
-  const revenue = BASE_DATA.revenue + wave * 20
-  const attemptsPerSlot = Number((2.6 - Math.min(wave, 3) * 0.1).toFixed(1))
-
-  return {
-    ...BASE_DATA,
-    recovered,
-    revenue,
-    attemptsPerSlot,
-    slotsRecovered: recovered,
-    outcomes: BASE_DATA.outcomes.map((item, index) => ({
-      ...item,
-      value: item.value + (index === wave ? 1 : 0),
-    })),
-    treatments: BASE_DATA.treatments.map((item, index) => ({
-      ...item,
-      value: item.value + (index === wave % 3 ? 20 : 0),
-    })),
-    trend: BASE_DATA.trend.map((item, index) => ({
-      ...item,
-      slots: item.slots + (index === wave ? 1 : 0),
-      revenue: item.revenue + (index === wave ? 40 : 0),
-    })),
-    updatedAt: new Date(),
-  }
 }
 
 function euro(value: number): string {
@@ -320,17 +289,8 @@ function TrendChart({ data }: { data: DashboardData["trend"] }) {
 }
 
 export function PerformanceDashboard() {
-  const [tick, setTick] = React.useState(0)
-  const data = React.useMemo(() => buildData(tick), [tick])
+  const data = BASE_DATA
   const refillRate = Math.round((data.recovered / data.totalCancellations) * 100)
-
-  React.useEffect(() => {
-    const id = window.setInterval(() => {
-      setTick((current) => current + 1)
-    }, 6000)
-
-    return () => window.clearInterval(id)
-  }, [])
 
   const metrics: Metric[] = [
     {
@@ -404,13 +364,9 @@ export function PerformanceDashboard() {
           </div>
           <div className="ml-auto hidden text-right text-xs text-muted-foreground md:block">
             <Activity className="ml-auto mb-1 size-4 text-teal-700" />
-            Updates live
+            Static mock data
             <br />
-            {data.updatedAt.toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-            })}
+            Weekly snapshot
           </div>
         </div>
       </section>
