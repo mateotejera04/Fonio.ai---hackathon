@@ -10,6 +10,13 @@ import {
 import type { CalendarEvent } from "@/lib/calendar"
 import { cn } from "@/lib/utils"
 
+interface OverviewRailProps {
+  events: CalendarEvent[]
+  overviewEvents?: CalendarEvent[]
+  overviewTitle?: string
+  overviewDateLabel?: string
+}
+
 function isSameDay(a: Date, b: Date) {
   return (
     a.getFullYear() === b.getFullYear() &&
@@ -18,16 +25,47 @@ function isSameDay(a: Date, b: Date) {
   )
 }
 
-// Real metrics from Google Calendar. We don't track check-in / completion /
-// no-show status, so those are shown as 0 (honest — the source has no such data).
-export function OverviewRail({ events }: { events: CalendarEvent[] }) {
+function isNoShow(event: CalendarEvent): boolean {
+  const text = `${event.summary} ${event.status ?? ""}`.toLowerCase()
+  return (
+    text.includes("no-show") ||
+    text.includes("no show") ||
+    text.includes("noshow") ||
+    text.includes("missed")
+  )
+}
+
+export function OverviewRail({
+  events,
+  overviewEvents,
+  overviewTitle = "Today's Overview",
+  overviewDateLabel,
+}: OverviewRailProps) {
   const now = new Date()
+  const rangeEvents =
+    overviewEvents ??
+    events.filter((event) => event.start && isSameDay(new Date(event.start), now))
+
+  const scheduledInRange = rangeEvents.filter(
+    (e) => e.start && !e.isAllDay && e.status !== "cancelled"
+  )
+  const noShowCount = scheduledInRange.filter(isNoShow).length
+  const completedCount = scheduledInRange.filter(
+    (e) =>
+      !isNoShow(e) &&
+      e.end &&
+      new Date(e.end).getTime() <= now.getTime()
+  ).length
+  const pendingCount = scheduledInRange.filter(
+    (e) =>
+      !isNoShow(e) &&
+      e.start &&
+      new Date(e.start).getTime() > now.getTime()
+  ).length
+
   const timed = events.filter(
     (e) => e.start && !e.isAllDay && e.status !== "cancelled"
   )
-
-  const todayCount = timed.filter((e) => isSameDay(new Date(e.start as string), now))
-    .length
 
   const upcoming = timed
     .filter((e) => new Date(e.start as string).getTime() >= now.getTime())
@@ -41,13 +79,28 @@ export function OverviewRail({ events }: { events: CalendarEvent[] }) {
   const stats = [
     {
       label: "Total Appointments",
-      value: todayCount,
+      value: scheduledInRange.length,
       icon: CalendarDays,
       tint: "bg-primary/10 text-primary",
     },
-    { label: "Completed", value: 0, icon: CircleCheck, tint: "bg-emerald-100 text-emerald-600" },
-    { label: "Pending Check-ins", value: 0, icon: Clock, tint: "bg-amber-100 text-amber-600" },
-    { label: "No-shows", value: 0, icon: CircleX, tint: "bg-red-100 text-red-600" },
+    {
+      label: "Completed",
+      value: completedCount,
+      icon: CircleCheck,
+      tint: "bg-emerald-100 text-emerald-600",
+    },
+    {
+      label: "Pending Check-ins",
+      value: pendingCount,
+      icon: Clock,
+      tint: "bg-amber-100 text-amber-600",
+    },
+    {
+      label: "No-shows",
+      value: noShowCount,
+      icon: CircleX,
+      tint: "bg-red-100 text-red-600",
+    },
   ]
 
   return (
@@ -55,15 +108,16 @@ export function OverviewRail({ events }: { events: CalendarEvent[] }) {
       <div className="rounded-xl border border-border bg-card p-4">
         <div className="flex items-center gap-2 text-sm font-semibold">
           <CalendarCheck2 className="size-4 text-muted-foreground" />
-          Today&apos;s Overview
+          {overviewTitle}
         </div>
         <p className="mt-1 text-sm text-muted-foreground">
-          {now.toLocaleDateString(undefined, {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          })}
+          {overviewDateLabel ??
+            now.toLocaleDateString(undefined, {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
         </p>
       </div>
 

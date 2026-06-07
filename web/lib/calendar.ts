@@ -5,6 +5,7 @@ export interface CalendarEvent {
   id: string
   summary: string
   patientName: string | null
+  appointmentType: string | null
   start: string | null
   end: string | null
   isAllDay: boolean
@@ -58,6 +59,66 @@ function patientNameFromSummary(summary?: string | null): string | null {
   const generic = /^(appointment|termin|dental appointment)$/i
   if (!generic.test(trimmed)) return trimmed
   return null
+}
+
+function appointmentTypeFromText(value?: string | null): string | null {
+  if (!value) return null
+  const text = stripHtml(value)
+  const labelled = text.match(
+    /(?:appointment|treatment|type|reason)\s*[:\-]\s*([^\n\r,;]+)/i
+  )
+  const candidate = labelled?.[1] ?? text
+  const normalized = candidate.toLowerCase()
+
+  if (normalized.includes("clean") || normalized.includes("hygiene")) {
+    return "Cleaning"
+  }
+  if (
+    normalized.includes("pain") ||
+    normalized.includes("urgent") ||
+    normalized.includes("emergency") ||
+    normalized.includes("cavity") ||
+    normalized.includes("root") ||
+    normalized.includes("filling")
+  ) {
+    return "Pain"
+  }
+  if (
+    normalized.includes("checkup") ||
+    normalized.includes("check-up") ||
+    normalized.includes("control") ||
+    normalized.includes("exam")
+  ) {
+    return "Checkup"
+  }
+
+  return null
+}
+
+function getAppointmentType(event: {
+  summary?: string | null
+  description?: string | null
+  extendedProperties?: {
+    private?: Record<string, string> | null
+    shared?: Record<string, string> | null
+  } | null
+}): string | null {
+  const props = {
+    ...(event.extendedProperties?.shared ?? {}),
+    ...(event.extendedProperties?.private ?? {}),
+  }
+
+  return (
+    firstString(
+      appointmentTypeFromText(props.appointmentType),
+      appointmentTypeFromText(props.appointment_type),
+      appointmentTypeFromText(props.treatment),
+      appointmentTypeFromText(props.treatmentType),
+      appointmentTypeFromText(props.appointment_new_type),
+      appointmentTypeFromText(event.description),
+      appointmentTypeFromText(event.summary)
+    ) ?? null
+  )
 }
 
 function getPatientName(event: {
@@ -126,6 +187,7 @@ export async function getCalendarEvents(opts?: {
       id: event.id ?? crypto.randomUUID(),
       summary: event.summary ?? "(No title)",
       patientName: getPatientName(event),
+      appointmentType: getAppointmentType(event),
       start: event.start?.dateTime ?? event.start?.date ?? null,
       end: event.end?.dateTime ?? event.end?.date ?? null,
       isAllDay,
