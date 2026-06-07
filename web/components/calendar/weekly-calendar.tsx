@@ -17,13 +17,14 @@ function startOfWeek(d: Date): Date {
   return out
 }
 
-type Tone = "blue" | "green" | "amber" | "red" | "violet"
+type Tone = "blue" | "green" | "amber" | "red" | "violet" | "sky"
 const TONE: Record<Tone, string> = {
   blue: "bg-blue-50 border-blue-300 text-blue-950",
   green: "bg-emerald-50 border-emerald-300 text-emerald-950",
   amber: "bg-amber-50 border-amber-300 text-amber-950",
   red: "bg-red-50 border-red-300 text-red-950",
   violet: "bg-violet-50 border-violet-300 text-violet-950",
+  sky: "bg-sky-50 border-sky-300 text-sky-950",
 }
 const DOT: Record<Tone, string> = {
   blue: "bg-blue-500",
@@ -31,9 +32,13 @@ const DOT: Record<Tone, string> = {
   amber: "bg-amber-500",
   red: "bg-red-500",
   violet: "bg-violet-500",
+  sky: "bg-sky-500",
 }
 
 function toneFor(e: CalendarEvent): Tone {
+  if (e.patientName?.trim().toLowerCase() === "philippe schell") {
+    return "sky"
+  }
   if (e.status === "cancelled") return "red"
   const s = `${e.appointmentType ?? ""} ${e.summary || ""}`.toLowerCase()
   if (s.includes("clean") || s.includes("hygiene")) return "green"
