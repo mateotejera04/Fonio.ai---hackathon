@@ -4,6 +4,7 @@ import type { VariantProps } from "class-variance-authority"
 import { ClipboardList, Trophy } from "lucide-react"
 
 import type { RankedWaitlistPatient, WaitlistStatus } from "@/lib/waitlist"
+import { formatEuro, treatmentPrice } from "@/lib/waitlist"
 import { Badge, badgeVariants } from "@/components/ui/badge"
 import {
   Empty,
@@ -35,16 +36,6 @@ const STATUS_VARIANT: Record<WaitlistStatus, BadgeVariant> = {
 
 function statusVariant(status: WaitlistStatus): BadgeVariant {
   return STATUS_VARIANT[status] ?? "secondary"
-}
-
-function patientTypeLabel(type: RankedWaitlistPatient["patientType"]): string {
-  return type === "assigned" ? "Assigned" : "Unassigned"
-}
-
-function patientTypeVariant(
-  type: RankedWaitlistPatient["patientType"]
-): BadgeVariant {
-  return type === "assigned" ? "secondary" : "outline"
 }
 
 function scorePercent(score: number): number {
@@ -89,7 +80,7 @@ export function WaitlistTable({ patients, onSelect }: WaitlistTableProps) {
           <TableHead>Name</TableHead>
           <TableHead>Phone</TableHead>
           <TableHead>Treatment</TableHead>
-          <TableHead>Patient type</TableHead>
+          <TableHead>Recoverable revenue</TableHead>
           <TableHead>Preferred window</TableHead>
           <TableHead>Days waiting</TableHead>
           <TableHead>Status</TableHead>
@@ -140,10 +131,8 @@ export function WaitlistTable({ patients, onSelect }: WaitlistTableProps) {
                 {patient.phone}
               </TableCell>
               <TableCell>{patient.desired_treatment}</TableCell>
-              <TableCell>
-                <Badge variant={patientTypeVariant(patient.patientType)}>
-                  {patientTypeLabel(patient.patientType)}
-                </Badge>
+              <TableCell className="font-medium tabular-nums">
+                {formatEuro(treatmentPrice(patient.desired_treatment))}
               </TableCell>
               <TableCell className="text-muted-foreground">
                 {patient.preferred_time_window}

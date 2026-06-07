@@ -82,7 +82,9 @@ interface OutboundCallBody {
 function parseAppointmentDateTime(s: string): Date | null {
   if (!s || typeof s !== "string") return null;
 
-  const match = s.trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})\s+(\d{1,2}):(\d{1,2})$/);
+  const match = s
+    .trim()
+    .match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})\s+(\d{1,2}):(\d{1,2})$/);
   if (!match) return null;
 
   const [, dayStr, monthStr, yearStr, hourStr, minuteStr] = match;
@@ -125,8 +127,13 @@ function slotIdFromStart(appointmentStart: string): string {
 }
 
 /** True iff `slotStart` is strictly in the future and within `CASCADE_WINDOW_DAYS` days. */
-function isWithinCascadeWindow(slotStart: Date, now: Date = new Date()): boolean {
-  const windowEnd = new Date(now.getTime() + CASCADE_WINDOW_DAYS * 24 * 60 * 60 * 1000);
+function isWithinCascadeWindow(
+  slotStart: Date,
+  now: Date = new Date(),
+): boolean {
+  const windowEnd = new Date(
+    now.getTime() + CASCADE_WINDOW_DAYS * 24 * 60 * 60 * 1000,
+  );
   return slotStart > now && slotStart <= windowEnd;
 }
 
@@ -192,9 +199,15 @@ async function getRecentlyCancelledCalendarEvent(): Promise<AppointmentDetails |
   };
 }
 
-const INELIGIBLE_WAITLIST_STATUSES = new Set(["ACCEPTED", "DECLINED", "EXPIRED"]);
+const INELIGIBLE_WAITLIST_STATUSES = new Set([
+  "ACCEPTED",
+  "DECLINED",
+  "EXPIRED",
+]);
 
-async function pickNextPersonForSlot(slotId: string): Promise<WaitlistPerson | null> {
+async function pickNextPersonForSlot(
+  slotId: string,
+): Promise<WaitlistPerson | null> {
   const patients = await (await getWaitlist()).find({}).toArray();
   const ranked = rankWaitlist(patients);
 
@@ -228,7 +241,8 @@ async function pickNextPersonForSlot(slotId: string): Promise<WaitlistPerson | n
     appointmentType: top.desired_treatment,
     // The waitlist schema has no stored appointment datetime for the patient's
     // existing/old slot — the dataset doesn't carry it, so leave blank.
-    appointmentDateTime: "18.06.2025 10:00",
+    // appointmentDateTime: "18.06.2025 10:00",
+    appointmentDateTime: "10.06.2025 11:00",
   };
 }
 
@@ -286,7 +300,9 @@ async function callPersonAndScheduleBlock(
 
 async function markAccepted(waitlistId: string): Promise<void> {
   try {
-    await (await getWaitlist()).updateOne(
+    await (
+      await getWaitlist()
+    ).updateOne(
       { waitlist_id: waitlistId },
       { $set: { waitlist_status: "ACCEPTED", updatedAt: new Date() } },
     );
@@ -295,9 +311,14 @@ async function markAccepted(waitlistId: string): Promise<void> {
   }
 }
 
-async function markRejectedForSlot(waitlistId: string, slotId: string): Promise<void> {
+async function markRejectedForSlot(
+  waitlistId: string,
+  slotId: string,
+): Promise<void> {
   try {
-    await (await getWaitlist()).updateOne(
+    await (
+      await getWaitlist()
+    ).updateOne(
       { waitlist_id: waitlistId },
       {
         $addToSet: { already_rejected_slots: slotId },
@@ -314,7 +335,10 @@ async function markRejectedForSlot(waitlistId: string, slotId: string): Promise<
 
 // ---- Single entry point for filling a freed/offered slot ----
 
-async function fillSlot(slot: AppointmentDetails, bookingNumber: number): Promise<void> {
+async function fillSlot(
+  slot: AppointmentDetails,
+  bookingNumber: number,
+): Promise<void> {
   const slotId = slotIdFromStart(slot.appointmentStart);
   const person = await pickNextPersonForSlot(slotId);
 

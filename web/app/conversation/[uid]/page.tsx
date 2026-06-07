@@ -4,8 +4,10 @@ import { format } from "date-fns"
 import {
   ArrowLeft,
   ArrowRight,
+  AudioLines,
   CalendarClock,
   Clock,
+  Download,
   MessagesSquare,
   PhoneIncoming,
   PhoneOutgoing,
@@ -14,6 +16,7 @@ import type { VariantProps } from "class-variance-authority"
 
 import { getCall, counterpartName } from "@/lib/calls"
 import { Badge, badgeVariants } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Transcript } from "@/components/conversation/transcript"
@@ -156,6 +159,33 @@ export default async function ConversationPage({
           </CardContent>
         )}
       </Card>
+
+      {call.audioLink && (
+        <Card>
+          <CardHeader>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <CardTitle className="flex items-center gap-2 text-base">
+                <AudioLines className="size-4 text-muted-foreground" />
+                Recording
+              </CardTitle>
+              <Button
+                variant="outline"
+                size="sm"
+                render={
+                  <a href={`/api/recording/${call._id}`} download />
+                }
+              >
+                <Download />
+                Download
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+            <audio controls preload="none" src={call.audioLink} className="w-full" />
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader>

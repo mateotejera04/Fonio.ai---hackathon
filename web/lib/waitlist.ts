@@ -17,6 +17,21 @@ export type WaitlistStatus =
   | "EXPIRED"
   | "NEEDS_HUMAN"
 
+// Fixed recoverable revenue per treatment (frontend-only, in EUR).
+export const TREATMENT_PRICE: Record<Treatment, number> = {
+  Pain: 70,
+  Checkup: 100,
+  Cleaning: 50,
+}
+
+export function treatmentPrice(treatment: Treatment): number {
+  return TREATMENT_PRICE[treatment] ?? 0
+}
+
+export function formatEuro(amount: number): string {
+  return `${amount} €`
+}
+
 /** Client-safe shape: BSON/Date stripped via JSON round-trip. */
 export interface WaitlistPatient {
   _id: string
