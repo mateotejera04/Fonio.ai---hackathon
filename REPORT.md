@@ -107,6 +107,15 @@ We answer every Fonio webhook with `200` immediately and run the actual `didSche
 </details>
 
 <details>
+<summary>Waitlist and understanding why the next person is going to be picked</summary>
+
+![Waitlist](materials/waitlist.png)
+![Sarah explanation](materials/waitlist-sara.png)
+
+</details>
+
+
+<details>
 <summary>Screenshots: live transcript & call overview in the web UI</summary>
 
 ![Transcript overview](materials/transcript-overview.png)
