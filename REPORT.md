@@ -77,9 +77,7 @@ The single parts:
 
 - `didSchedule`: it's used to decide if it should call the second person from the list, eg. when the first one said "No", we're gonna take the second user from the waitlist
 - `requestedCallbackInMinutes`: we decided that the user might be busy and wanted to catch the edge case when he tells us "Please call me back in 10 minutes". If this variable is returned, we're stopping the calling and schedule another call after the amount of minutes given
-- `reachedMailbox`: if the assistant reaches the mailbox, it sends out an SMS telling the person to call us back for an appointment. For SMS sending we are also using the Fonio infrastructure.
-
-![Alfred sends an SMS](/materials/alfred-sms.jpeg)
+- `reachedMailbox`: if the assistant reaches the mailbox, it sends out an SMS telling the person to call us back for an appointment. For SMS sending we are also using the Fonio infrastructure (see [Demo](#demo) for a screenshot).
 
 ### Cascade — refilling the slot the new patient frees up
 
@@ -96,6 +94,33 @@ This roughly doubles the slots we can recover from a single cancellation, for th
 ### Webhook handling: ack first, process async
 
 We answer every Fonio webhook with `200` immediately and run the actual `didSchedule` / `reachedMailbox` / cascade logic afterwards, plus we deduplicate retried deliveries by `callId` in a `processedCalls` set. This avoids the classic webhook failure mode where a slow handler causes the sender to retry the same event and the system ends up calling the same person twice or double-booking a slot.
+
+---
+
+## Demo
+
+<details>
+<summary>Recording: Alfred reschedules Steffen's appointment (mp4)</summary>
+
+<video controls width="100%" src="https://raw.githubusercontent.com/mateotejera04/Fonio.ai---hackathon/main/materials/conversation-steffen-reschedule.mp4"></video>
+
+</details>
+
+<details>
+<summary>Screenshots: live transcript & call overview in the web UI</summary>
+
+![Transcript overview](materials/transcript-overview.png)
+
+![Transcript screenshot](materials/transcript-screenshot.png)
+
+</details>
+
+<details>
+<summary>Alfred sending a follow-up SMS after reaching voicemail</summary>
+
+![Alfred sends an SMS](materials/alfred-sms.jpeg)
+
+</details>
 
 ---
 
