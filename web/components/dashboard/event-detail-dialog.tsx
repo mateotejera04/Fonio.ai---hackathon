@@ -37,6 +37,7 @@ const STATUS_STYLE: Record<string, string> = {
 export function EventDetailDialog({ event }: { event: CalendarEvent }) {
   const duration = durationLabel(event)
   const status = event.status ?? "confirmed"
+  const title = event.patientName ?? event.summary
 
   return (
     <Dialog>
@@ -45,7 +46,7 @@ export function EventDetailDialog({ event }: { event: CalendarEvent }) {
           <button
             type="button"
             className="block w-full max-w-full text-left"
-            title={event.summary}
+            title={title}
           />
         }
       >
@@ -61,7 +62,7 @@ export function EventDetailDialog({ event }: { event: CalendarEvent }) {
                 {format(new Date(event.start), "HH:mm")} ·{" "}
               </span>
             ) : null}
-            {event.summary}
+            {title}
           </span>
         </Badge>
       </DialogTrigger>
@@ -69,7 +70,7 @@ export function EventDetailDialog({ event }: { event: CalendarEvent }) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="font-heading text-xl">
-            {event.summary}
+            {title}
           </DialogTitle>
           <DialogDescription>Appointment details</DialogDescription>
         </DialogHeader>

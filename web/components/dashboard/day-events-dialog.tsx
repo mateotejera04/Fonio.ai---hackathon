@@ -76,6 +76,7 @@ export function DayEventsDialog({
               {sorted.map((event) => {
                 const status = event.status ?? "confirmed"
                 const duration = durationLabel(event)
+                const title = event.patientName ?? event.summary
                 return (
                   <div
                     key={event.id}
@@ -90,7 +91,7 @@ export function DayEventsDialog({
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="truncate text-sm font-medium">
-                        {event.summary}
+                        {title}
                       </div>
                       {duration && !event.isAllDay && (
                         <div className="text-xs text-muted-foreground">

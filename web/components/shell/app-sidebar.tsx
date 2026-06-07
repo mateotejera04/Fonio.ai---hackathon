@@ -6,6 +6,7 @@ import {
   CalendarClock,
   CalendarDays,
   ClipboardClock,
+  HandCoins,
   LayoutDashboard,
   LogOut,
   Settings,
@@ -44,7 +45,7 @@ function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(href + "/")
 }
 
-export function AppSidebar() {
+export function AppSidebar({ recoveredRevenue }: { recoveredRevenue: string }) {
   const pathname = usePathname()
 
   return (
@@ -102,6 +103,15 @@ export function AppSidebar() {
       </nav>
 
       <div className="border-t border-sidebar-border px-3 py-3">
+        <div className="mb-2 rounded-lg border border-sidebar-border bg-sidebar-accent/45 p-3">
+          <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+            <HandCoins className="size-3.5" />
+            Total recovered revenue
+          </div>
+          <div className="mt-1 font-heading text-xl font-semibold tracking-tight tabular-nums text-sidebar-foreground">
+            {recoveredRevenue}
+          </div>
+        </div>
         <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
           <LogOut className="size-[18px]" />
           Logout

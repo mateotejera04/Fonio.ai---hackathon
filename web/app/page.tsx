@@ -1,4 +1,4 @@
-import { Activity, CalendarDays, TrendingUp } from "lucide-react"
+import { Activity, CalendarDays } from "lucide-react"
 
 import { ConversationList } from "@/components/dashboard/conversation-list"
 import { MonthGrid } from "@/components/dashboard/month-grid"
@@ -6,11 +6,7 @@ import { WaitlistDialog } from "@/components/dashboard/waitlist-dialog"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { getCalendarEvents, type CalendarEvent } from "@/lib/calendar"
 import { getCalls, type CallSummary } from "@/lib/calls"
-import {
-  formatEuro,
-  treatmentPrice,
-  type RankedWaitlistPatient,
-} from "@/lib/waitlist"
+import type { RankedWaitlistPatient } from "@/lib/waitlist"
 import { getRankedWaitlist } from "@/lib/waitlist.server"
 
 // Always render at request time so the dashboard reflects live data instead of
@@ -48,10 +44,6 @@ export default async function Home() {
     loadWaitlist(),
   ])
 
-  const recoveredRevenue = waitlist
-    .filter((patient) => patient.waitlist_status === "ACCEPTED")
-    .reduce((sum, patient) => sum + treatmentPrice(patient.desired_treatment), 0)
-
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
       <header className="mb-10 flex items-start justify-between gap-3">
@@ -73,25 +65,6 @@ export default async function Home() {
       </header>
 
       <div className="flex flex-col gap-8">
-        <section>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="size-4 text-muted-foreground" />
-                Total recovered revenue
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="font-heading text-3xl font-semibold tracking-tight tabular-nums">
-                {formatEuro(recoveredRevenue)}
-              </p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                From patients who accepted a freed slot.
-              </p>
-            </CardContent>
-          </Card>
-        </section>
-
         <section className="flex flex-col gap-3">
           <Card>
             <CardHeader>

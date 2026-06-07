@@ -205,16 +205,17 @@ export function WeeklyCalendar() {
                     {cell.map((e) => {
                       const tone = toneFor(e)
                       const dur = durationMin(e)
+                      const title = e.patientName ?? e.summary
                       return (
                         <div
                           key={e.id}
                           className={cn("rounded-lg border p-1.5 text-xs", TONE[tone])}
-                          title={e.summary}
+                          title={title}
                         >
                           <div className="flex items-center gap-1">
                             <span className={cn("size-1.5 rounded-full", DOT[tone])} />
                             <span className="truncate font-semibold">
-                              {e.summary}
+                              {title}
                             </span>
                           </div>
                           {dur != null && (

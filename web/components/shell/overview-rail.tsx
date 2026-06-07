@@ -92,7 +92,9 @@ export function OverviewRail({ events }: { events: CalendarEvent[] }) {
           <ul className="mt-3 space-y-2">
             {upcoming.map((e) => (
               <li key={e.id} className="rounded-lg border border-border p-2.5">
-                <div className="truncate text-sm font-medium">{e.summary}</div>
+                <div className="truncate text-sm font-medium">
+                  {e.patientName ?? e.summary}
+                </div>
                 <div className="text-xs text-muted-foreground">
                   {new Date(e.start as string).toLocaleString(undefined, {
                     weekday: "short",
