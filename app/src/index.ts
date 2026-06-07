@@ -32,6 +32,7 @@ const OUTBOUND_CALL_URL = "https://app.fonio.ai/api/public/v1/outbound_call";
 
 const MAX_BOOKINGS = 2;
 const CASCADE_WINDOW_DAYS = 7;
+const MAX_CALLBACKS = 3;
 
 // Idempotency guard for the outbound-call-done webhook (best-effort callId dedupe).
 const processedCalls = new Set<string>();
@@ -74,6 +75,7 @@ interface OutboundCallBody {
   _id?: string;
   extractionData?: {
     didSchedule?: boolean | null;
+    requestedCallbackInMinutes?: number | null;
   };
   context?: Record<string, any>;
 }
@@ -253,6 +255,7 @@ async function callPersonAndScheduleBlock(
   newSlot: AppointmentDetails,
   slotId: string,
   bookingNumber: number,
+  callbackCount: number = 0,
 ): Promise<void> {
   const [oldDate, oldTime] = person.appointmentDateTime.split(" ");
   const [newDate, newTime] = newSlot.appointmentStart.split(" ");
@@ -275,6 +278,7 @@ async function callPersonAndScheduleBlock(
       waitlist_id: person.waitlistId,
       slot_id: slotId,
       booking_number: bookingNumber,
+      callback_count: callbackCount,
     },
   };
 
@@ -296,6 +300,60 @@ async function callPersonAndScheduleBlock(
   );
   const response = await axios.post(OUTBOUND_CALL_URL, payload);
   console.log("[outbound] call initiated:", response.data);
+}
+
+/**
+ * Hold the offered slot for the same patient and re-call them after `minutes`.
+ * NOTE: in-memory scheduling — a process restart loses any pending callbacks.
+ */
+function scheduleCallback(
+  ctx: Record<string, any>,
+  minutes: number,
+  bookingNumber: number,
+): void {
+  const callbackCount = Number(ctx?.callback_count ?? 0);
+
+  if (callbackCount >= MAX_CALLBACKS) {
+    console.log(
+      `[callback] max callbacks (${MAX_CALLBACKS}) reached for ${ctx?.waitlist_id} — not scheduling another`,
+    );
+    return;
+  }
+
+  const person: WaitlistPerson = {
+    waitlistId: ctx.waitlist_id,
+    phone: ctx.phone,
+    firstName: ctx.first_name,
+    lastName: ctx.last_name,
+    email: ctx.email,
+    appointmentDateTime: `${ctx.appointment_old_date} ${ctx.appointment_old_time}`,
+    appointmentType: ctx.appointment_old_type,
+  };
+
+  const offeredSlot: AppointmentDetails = {
+    appointmentStart: `${ctx.appointment_new_date} ${ctx.appointment_new_time}`,
+    appointmentType: ctx.appointment_new_type,
+    durationMin: 30,
+  };
+
+  const slotId = ctx.slot_id;
+
+  console.log(
+    `[callback] scheduling callback to ${person.firstName} ${person.lastName} in ${minutes} min for slot ${slotId} (callback ${callbackCount + 1}/${MAX_CALLBACKS})`,
+  );
+
+  setTimeout(
+    () => {
+      callPersonAndScheduleBlock(
+        person,
+        offeredSlot,
+        slotId,
+        bookingNumber,
+        callbackCount + 1,
+      ).catch(console.error);
+    },
+    minutes * 60 * 1000,
+  );
 }
 
 // ---- DB update helpers ----
@@ -405,6 +463,19 @@ async function handleOutboundCallDone(body: OutboundCallBody): Promise<void> {
   }
 
   if (didSchedule !== true) {
+    const requestedCallbackInMinutes =
+      body?.extractionData?.requestedCallbackInMinutes;
+    if (
+      requestedCallbackInMinutes != null &&
+      Number(requestedCallbackInMinutes) > 0
+    ) {
+      console.log(
+        `[callback] ${ctx?.first_name ?? ""} ${ctx?.last_name ?? ""} requested a callback in ${requestedCallbackInMinutes} min for slot ${slotId} — holding slot, not offering to next candidate`,
+      );
+      scheduleCallback(ctx, Number(requestedCallbackInMinutes), bookingNumber);
+      return;
+    }
+
     // Loop 1: retry — the offered candidate declined (or no-show).
     await markRejectedForSlot(waitlistId, slotId);
 

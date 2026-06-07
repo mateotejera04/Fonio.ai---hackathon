@@ -231,8 +231,8 @@ export function applyHardFilters(patient: {
   consent_call: boolean
   consent_message: boolean
 }): HardFilterResult {
-  if (!patient.consent_call && !patient.consent_message) {
-    return { passed: false, reason: "No contact consent" }
+  if (!patient.consent_call) {
+    return { passed: false, reason: "No call consent" }
   }
   return { passed: true }
 }
