@@ -6,6 +6,12 @@ services:
     # .env shipped next to this file by the deploy workflow (secrets.DOT_ENV).
     env_file:
       - .env
+    environment:
+      # Service account key shipped next to this file by the deploy workflow
+      # (secrets.GOOGLE_CALENDAR_IAM), mounted below for the calendar integration.
+      - GOOGLE_CALENDAR_KEY_FILE=/run/secrets/google-calendar-iam.json
+    volumes:
+      - ./google-calendar-iam.json:/run/secrets/google-calendar-iam.json:ro
 
   cloudflared:
     image: cloudflare/cloudflared:latest

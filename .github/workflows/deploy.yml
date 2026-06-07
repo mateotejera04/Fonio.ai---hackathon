@@ -47,12 +47,17 @@ jobs:
           # interpolate ${CLOUDFLARE_TUNNEL_KEY} in docker-compose.prod.yml.
           printf 'CLOUDFLARE_TUNNEL_KEY=%s\n' "${{ secrets.CLOUDFLARE_TUNNEL_KEY }}" >> .env
 
+      - name: Write Google Calendar service account key
+        run: |
+          printf '%s' "${{ secrets.GOOGLE_CALENDAR_IAM }}" > google-calendar-iam.json
+
       - name: Upload image, compose file and env
         run: |
           scp -i ~/.ssh/id_rsa \
             web.tar.gz \
             docker-compose.prod.yml \
             .env \
+            google-calendar-iam.json \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/root/projects/fonio-hackathon/"
 
       - name: Load image and restart service

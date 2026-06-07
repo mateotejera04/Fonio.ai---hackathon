@@ -37,7 +37,9 @@ const CASCADE_WINDOW_DAYS = 7;
 const processedCalls = new Set<string>();
 
 const auth = new google.auth.GoogleAuth({
-  keyFile: path.resolve(__dirname, "../../.alfred.iam.json"),
+  keyFile:
+    process.env.GOOGLE_CALENDAR_KEY_FILE ??
+    path.resolve(__dirname, "../../.alfred.iam.json"),
   scopes: ["https://www.googleapis.com/auth/calendar.readonly"],
 });
 const calendar = google.calendar({ version: "v3", auth });
@@ -242,7 +244,7 @@ async function pickNextPersonForSlot(
     // The waitlist schema has no stored appointment datetime for the patient's
     // existing/old slot — the dataset doesn't carry it, so leave blank.
     // appointmentDateTime: "18.06.2025 10:00",
-    appointmentDateTime: "10.06.2025 11:00",
+    appointmentDateTime: "10.06.2026 11:00",
   };
 }
 

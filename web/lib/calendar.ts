@@ -13,9 +13,11 @@ export interface CalendarEvent {
 const CALENDAR_ID = "scheer28philipp@gmail.com"
 
 function getCalendarClient() {
-  const keyPath = path.resolve(process.cwd(), "../.alfred.iam.json")
+  const keyFile =
+    process.env.GOOGLE_CALENDAR_KEY_FILE ??
+    path.resolve(process.cwd(), "../.alfred.iam.json")
   const auth = new google.auth.GoogleAuth({
-    keyFile: keyPath,
+    keyFile,
     scopes: ["https://www.googleapis.com/auth/calendar.readonly"],
   })
   return google.calendar({ version: "v3", auth })

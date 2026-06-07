@@ -54,8 +54,11 @@ function durationMin(e: CalendarEvent): number | null {
   )
 }
 
+// Demo default: open on the week of Mon 8 Jun – Sun 14 Jun 2026.
+const DEFAULT_WEEK = new Date(2026, 5, 8)
+
 export function WeeklyCalendar() {
-  const [weekStart, setWeekStart] = useState<Date>(() => startOfWeek(new Date()))
+  const [weekStart, setWeekStart] = useState<Date>(() => startOfWeek(DEFAULT_WEEK))
   const [events, setEvents] = useState<CalendarEvent[]>([])
   const [loading, setLoading] = useState(true)
 
