@@ -76,6 +76,7 @@ interface OutboundCallBody {
   extractionData?: {
     didSchedule?: boolean | null;
     requestedCallbackInMinutes?: number | null;
+    reachedMailbox?: boolean | null;
   };
   context?: Record<string, any>;
 }
@@ -211,6 +212,7 @@ const INELIGIBLE_WAITLIST_STATUSES = new Set([
 
 async function pickNextPersonForSlot(
   slotId: string,
+  bookingNumber: number = 1,
 ): Promise<WaitlistPerson | null> {
   const patients = await (await getWaitlist()).find({}).toArray();
   const ranked = rankWaitlist(patients);
@@ -244,9 +246,12 @@ async function pickNextPersonForSlot(
     email: "scheer28philipp@gmail.com",
     appointmentType: top.desired_treatment,
     // The waitlist schema has no stored appointment datetime for the patient's
-    // existing/old slot — the dataset doesn't carry it, so leave blank.
-    // appointmentDateTime: "18.06.2025 10:00",
-    appointmentDateTime: "10.06.2026 11:00",
+    // existing/old slot — the dataset doesn't carry it, so hard-code per run.
+    // Run 1 (booking #1) frees the first slot; run 2 is the cascade after a
+    // reschedule already happened, so it needs a *different* old slot or it
+    // would collide with the slot being offered (10.06.2026 11:00).
+    appointmentDateTime:
+      bookingNumber >= 2 ? "12.06.2026 14:00" : "10.06.2026 11:00",
   };
 }
 
@@ -274,7 +279,7 @@ async function callPersonAndScheduleBlock(
       appointment_old_type: person.appointmentType,
       appointment_new_date: newDate,
       appointment_new_time: newTime,
-      appointment_new_type: newSlot.appointmentType,
+      appointment_new_type: person.appointmentType,
       waitlist_id: person.waitlistId,
       slot_id: slotId,
       booking_number: bookingNumber,
@@ -296,7 +301,7 @@ async function callPersonAndScheduleBlock(
   console.log(
     "[outbound] new slot:",
     newSlot.appointmentStart,
-    newSlot.appointmentType,
+    person.appointmentType,
   );
   const response = await axios.post(OUTBOUND_CALL_URL, payload);
   console.log("[outbound] call initiated:", response.data);
@@ -400,7 +405,7 @@ async function fillSlot(
   bookingNumber: number,
 ): Promise<void> {
   const slotId = slotIdFromStart(slot.appointmentStart);
-  const person = await pickNextPersonForSlot(slotId);
+  const person = await pickNextPersonForSlot(slotId, bookingNumber);
 
   if (!person) {
     console.warn(
@@ -458,6 +463,15 @@ async function handleOutboundCallDone(body: OutboundCallBody): Promise<void> {
   if (!slotId || !waitlistId) {
     console.log(
       "[recovery] outbound-call-done missing slot_id/waitlist_id in context — not a managed call, ignoring",
+    );
+    return;
+  }
+
+  // Reached voicemail — no human on the line, so there's nothing to act on.
+  // Stop here: don't retry the next candidate, don't schedule a callback.
+  if (body?.extractionData?.reachedMailbox === true) {
+    console.log(
+      `[recovery] reached voicemail for ${ctx?.first_name ?? ""} ${ctx?.last_name ?? ""} on slot ${slotId} — stopping`,
     );
     return;
   }

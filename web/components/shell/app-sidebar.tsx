@@ -7,8 +7,8 @@ import {
   CalendarDays,
   ClipboardClock,
   HandCoins,
-  LayoutDashboard,
   LogOut,
+  MessagesSquare,
   Settings,
   Stethoscope,
   TrendingUp,
@@ -27,7 +27,7 @@ interface NavItem extends NavChild {
 }
 
 const NAV: NavItem[] = [
-  { href: "/", label: "Overview", icon: LayoutDashboard },
+  { href: "/", label: "Conversations", icon: MessagesSquare },
   { href: "/dashboard", label: "Dashboard", icon: TrendingUp },
   {
     href: "/calendar",

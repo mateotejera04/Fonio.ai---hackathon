@@ -72,6 +72,10 @@ export function WaitlistTable({ patients, onSelect }: WaitlistTableProps) {
     )
   }
 
+  const nextToFillId = patients.find(
+    (patient) => patient.hardFilterPassed && patient.waitlist_status === "QUEUED"
+  )?._id
+
   return (
     <Table>
       <TableHeader>
@@ -90,7 +94,7 @@ export function WaitlistTable({ patients, onSelect }: WaitlistTableProps) {
       <TableBody>
         {patients.map((patient) => {
           const filtered = !patient.hardFilterPassed
-          const isTop = patient.rank === 1
+          const isTop = patient._id === nextToFillId
 
           const clickable = Boolean(onSelect)
 

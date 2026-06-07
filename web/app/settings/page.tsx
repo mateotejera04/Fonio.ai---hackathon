@@ -1,6 +1,6 @@
-import { Stethoscope } from "lucide-react"
+import { Stethoscope } from "lucide-react";
 
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";
 
 export default function SettingsPage() {
   return (
@@ -16,7 +16,7 @@ export default function SettingsPage() {
             <Stethoscope className="size-5" />
           </span>
           <div>
-            <div className="font-medium">The Patient — Dental Practice</div>
+            <div className="font-medium">Dental 5 Practice</div>
             <div className="text-sm text-muted-foreground">
               Single-dentist practice · Vienna
             </div>
@@ -24,5 +24,5 @@ export default function SettingsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
