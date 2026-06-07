@@ -20,10 +20,37 @@ Fonio asked us to build a voice-agent solution for a real-world business problem
 - **Cascade recovery** — booking a candidate into a freed slot frees up *their* old slot too, so we re-run the recovery loop on it (capped to avoid runaway call chains)
 - **Web dashboard** for dental staff to see the waitlist ranking, watch calendar fill-rate (Google Calendar integration), and follow ongoing conversations live, including recordings
 
+## Architecture
+
+```mermaid
+flowchart TD
+    A["Patient calls practice<br/>(Fonio inbound agent)"] -->|"webhook: extractionData.didCancel = true"| B["Express webhook server<br/>ack 200 immediately, dedupe by callId"]
+    B --> C["Google Calendar API<br/>last 15 min, showDeleted=true,<br/>status=cancelled, sorted by updated"]
+    C --> D["Freed slot<br/>start/end -> duration, type read from summary field"]
+    D --> E["Ranking engine (MongoDB waitlist)<br/>hard filters -> weighted soft scoring<br/>ASSIGNED/UNASSIGNED tables + days-until-slot modifier"]
+    E --> F["Sorted candidate list"]
+    F --> G["Fonio outbound agent 'Alfred'<br/>calls top candidate"]
+    G -->|"extractionData: didSchedule / requestedCallbackInMinutes / reachedMailbox"| H{"Outcome"}
+    H -->|"didSchedule = true"| I["Book new slot, cancel old slot"]
+    H -->|"didSchedule = false"| F
+    H -->|"requestedCallbackInMinutes > 0"| J["scheduleCallback(): in-memory setTimeout retry"]
+    H -->|"reachedMailbox = true"| K["Send follow-up SMS via Fonio"]
+    I --> L["Cascade: candidate's old slot now freed<br/>MAX_BOOKINGS = 2, CASCADE_WINDOW_DAYS = 7"]
+    L --> E
+    E -.->|reads| M["Next.js dashboard<br/>waitlist, calendar fill-rate, live calls"]
+```
+
+Full write-up of each stage — including the scoring formulas and known gaps — lives in [REPORT.md](/REPORT.md) and [ranking.md](/ranking.md).
+
 ## Demo
 
 - Live (read-only) demo: [fonio.philippscheer.com](https://fonio.philippscheer.com) — dashboard with recorded calls and calendar view
-- Video / audio / screenshots: see [`/materials`](/materials) — e.g. [conversation-steffen-reschedule.mp4](/materials/conversation-steffen-reschedule.mp4), [transcript-overview.png](/materials/transcript-overview.png), [alfred-sms.jpeg](/materials/alfred-sms.jpeg)
+- Recordings: [conversation-steffen-reschedule.mp4](/materials/conversation-steffen-reschedule.mp4) (Alfred reschedules a patient end-to-end), [reroute-human-compressed.mp4](/materials/reroute-human-compressed.mp4) (Alfred answers practice questions and reroutes to a human)
+- Waitlist & ranking: [waitlist.png](/materials/waitlist.png), [waitlist-sara.png](/materials/waitlist-sara.png) — the ranked waitlist view and the rationale behind why a given patient is picked next
+- Live transcripts: [transcript-overview.png](/materials/transcript-overview.png), [transcript-screenshot.png](/materials/transcript-screenshot.png) — call overview and live transcript in the web UI
+- SMS fallback: [alfred-sms.jpeg](/materials/alfred-sms.jpeg) — Alfred's follow-up SMS after reaching voicemail
+- Outbound call system prompt: [outbound-prompt.md](/materials/outbound-prompt.md)
+- All of the above are also walked through with context in [REPORT.md → Demo](/REPORT.md#demo)
 
 ## Getting started
 
@@ -38,12 +65,13 @@ Fonio asked us to build a voice-agent solution for a real-world business problem
 
 ```bash
 # 1. Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/mateotejera04/Fonio.ai---hackathon fonio-hackathon
 cd fonio-hackathon
 
 # 2. Configure environment
-cp .env.example .env
 # fill in the required values (see Configuration below)
+# FONIO_API_KEY=xx
+# MONGODB_URI=xx
 
 # 3. Install dependencies
 cd app && npm install
